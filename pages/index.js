@@ -36,6 +36,25 @@ const MaskedReveal = ({ children, delay = 0, className = "" }) => {
   );
 };
 
+const TextLineReveal = ({ children, delay = 0, className = "" }) => {
+  return (
+    <div className={`overflow-hidden ${className}`}>
+      <motion.div
+        initial={{ y: "100%" }}
+        whileInView={{ y: "0%" }}
+        viewport={{ once: false, margin: "-10%" }} // Kích hoạt khi vào tầm nhìn
+        transition={{
+          duration: 0.9,
+          ease: [0.33, 1, 0.68, 1], // Easing kiểu "trượt nhẹ rồi dừng"
+          delay: delay,
+        }}
+      >
+        {children}
+      </motion.div>
+    </div>
+  );
+};
+
 // --- COMPONENT SÓNG ---
 const CurveLayer = ({ path, color, zIndex, delay, height }) => {
   return (
@@ -126,6 +145,18 @@ export default function Home() {
     { title: "Home", href: "" },
     { title: "About me", href: "/about" },
     { title: "Work", href: "/work" },
+  ];
+
+  const aboutLines = [
+    "Dory is a designer based in Vietnam, driven by curiosity, softness, and a little bit of ",
+    "chaos. With a background in Graphic Design and a passion for visual storytelling, ",
+    "she explores how colors, forms, and emotions can shape human experience. ",
+    "Her work moves between clarity and playfulness — blending graphic design, ",
+    "illustration, and brand thinking. Whether it’s a children’s toy concept, a quirky ",
+    "game world, or a clean visual system, Nhi seeks the sweet spot between logic and ",
+    "feeling, intention and instinct. ",
+    "Her portfolio is both a personal space and a design playground — where ideas ",
+    "grow, rules bend, and creativity stays honest. ",
   ];
 
   return (
@@ -267,18 +298,20 @@ export default function Home() {
         <p className="AristaProAlternateLighttrial font-[700] text-[88px] leading-[76px] text-center text-[#F1E306]">
           WHO IS DORY?
         </p>
-        <p className="LexendRegular text-center font-[400] text-[#020202] text-[28px]">
-          Dory is a designer based in Vietnam, driven by curiosity, softness,
-          and a little bit of chaos. With a background in Graphic Design and a
-          passion for visual storytelling, she explores how colors, forms, and
-          emotions can shape human experience. Her work moves between clarity
-          and playfulness — blending graphic design, illustration, and brand
-          thinking. Whether it’s a children’s toy concept, a quirky game world,
-          or a clean visual system, Nhi seeks the sweet spot between logic and
-          feeling, intention and instinct. Her portfolio is both a personal
-          space and a design playground — where ideas grow, rules bend, and
-          creativity stays honest.
-        </p>
+        {/* Khối text được căn giữa, chiều rộng giới hạn để giống layout tạp chí */}
+        <div className="flex flex-col items-center gap-[0.2em] max-w-[90%]">
+          {aboutLines.map((line, index) => (
+            <TextLineReveal
+              key={index}
+              delay={index * 0.05} // Stagger nhanh (0.05s) tạo hiệu ứng gợn sóng mượt
+              className="text-center"
+            >
+              <span className="LexendRegular font-[400] text-[#020202] text-[25px] leading-[1.4] inline-block leading-[76px]">
+                {line}
+              </span>
+            </TextLineReveal>
+          ))}
+        </div>
       </div>
 
       {/* Work Section */}
