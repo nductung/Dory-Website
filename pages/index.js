@@ -181,7 +181,7 @@ export default function Home() {
   ];
 
   return (
-    <div className="max-w-[1440px] w-full">
+    <div className="max-w-[1440px] w-full bg-primary">
       {/* --- MENU OVERLAY --- */}
       <AnimatePresence mode="wait">
         {isOpen && (

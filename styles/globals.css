@@ -92,6 +92,10 @@ body {
   /* line-height: 189px; */
 }
 
+.bg-primary {
+  background-color: #020202;
+}
+
 /*  */
 .AristaProAlternateLighttrial {
   font-family: "AristaProAlternateLighttrial";
