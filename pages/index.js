@@ -55,6 +55,27 @@ const TextLineReveal = ({ children, delay = 0, className = "" }) => {
   );
 };
 
+const WorkReveal = ({ children, delay = 0, className = "" }) => {
+  return (
+    <motion.div
+      className={className}
+      initial={{ x: -100, opacity: 0 }} // Bắt đầu: Dịch sang trái 100px và ẩn
+      whileInView={{ x: 0, opacity: 1 }} // Khi thấy: Trượt về 0 và hiện rõ
+      viewport={{
+        once: true, // Lặp lại khi scroll
+        margin: "-10%",
+      }}
+      transition={{
+        duration: 0.8,
+        ease: TRANSITION.ease,
+        delay: delay,
+      }}
+    >
+      {children}
+    </motion.div>
+  );
+};
+
 // --- COMPONENT SÓNG ---
 const CurveLayer = ({ path, color, zIndex, delay, height }) => {
   return (
@@ -243,7 +264,7 @@ export default function Home() {
       </AnimatePresence>
 
       {/* Header */}
-      <div className="px-[60px] flex flex-row justify-between items-center py-[26px]">
+      <div className="px-[60px] py-[26px] flex flex-row justify-between items-center">
         <img className="h-55" src="/images/logo.svg" alt="Logo" />
         <div>
           <button
@@ -256,7 +277,7 @@ export default function Home() {
       </div>
 
       {/* Introduction */}
-      <div className="flex flex-col px-[98px] py-[100px]">
+      <div className="px-[98px] py-[100px] flex flex-col ">
         <MaskedReveal delay={0} className="leading-[189px]">
           <LinearGradient
             className="text-hello AristaProAlternateLighttrial p-[4px]"
@@ -294,7 +315,7 @@ export default function Home() {
       </div>
 
       {/* About Section */}
-      <div className="bg-[#6956B2] px-[145px] py-[237px] flex flex-col gap-[50px]">
+      <div className="px-[145px] py-[145px] bg-[#6956B2] flex flex-col gap-[50px]">
         <p className="AristaProAlternateLighttrial font-[700] text-[88px] leading-[76px] text-center text-[#F1E306]">
           WHO IS DORY?
         </p>
@@ -314,29 +335,32 @@ export default function Home() {
         </div>
       </div>
 
-      {/* Work Section */}
+      {/* Work Section - ĐÃ CẬP NHẬT HIỆU ỨNG TRÁI QUA PHẢI + LẶP LẠI */}
       <div className="px-[82px] py-[135px]">
-        <p className="font-[700] text-[88px] leading-[76px] text-[#6956B2] pb-[135px]">
+        <p className="font-[700] text-[88px] leading-[76px] text-[#6956B2] pb-[100px]">
           Work
         </p>
         {listWork.map((item, index) => (
-          <div className="flex flex-col h-[132px]" key={`listWork_${index}`}>
-            <div className="relative group flex items-center justify-between cursor-pointer overflow-hidden">
-              <span className="font-[700] text-[48px] leading-[41px] text-[#7BC14B] transition-transform duration-300 group-hover:translate-x-4">
-                {item.title}
-              </span>
-              <img
-                src={item.logo}
-                alt={item.title}
-                className="h-[132px] w-[132px] opacity-0 scale-50 group-hover:opacity-100 group-hover:scale-100 transition-all duration-300"
-              />
+          // Bọc mỗi item trong WorkReveal
+          <WorkReveal key={`listWork_${index}`} delay={0.1}>
+            <div className="flex flex-col h-[132px]">
+              <div className="relative group flex items-center justify-between cursor-pointer overflow-hidden">
+                <span className="font-[700] text-[48px] leading-[41px] text-[#7BC14B] transition-transform duration-300 group-hover:translate-x-4">
+                  {item.title}
+                </span>
+                <img
+                  src={item.logo}
+                  alt={item.title}
+                  className="h-[132px] w-[132px] opacity-0 scale-50 group-hover:opacity-100 group-hover:scale-100 transition-all duration-300"
+                />
+              </div>
             </div>
-          </div>
+          </WorkReveal>
         ))}
       </div>
 
       {/* Contact Section */}
-      <div className="px-[122px] pt-[244px] pb-[398px] relative">
+      <div className="px-[122px] pt-[135px] pb-[300px] relative">
         <p className="font-[700] text-[188px] leading-[200px] text-[#F1E306]">
           TELL ME
           <br />
