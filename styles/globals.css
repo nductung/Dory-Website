@@ -213,3 +213,40 @@ body {
   src: url("/fonts/Lexend-Thin.ttf") format("truetype");
   font-weight: 100;
 }
+
+.menu-marquee {
+  position: relative;
+  overflow: hidden;
+  display: inline-block;
+}
+
+.menu-marquee span {
+  display: inline-block;
+  white-space: nowrap;
+  transform: translateX(0);
+}
+
+/* Bản sao MENU — nhưng mặc định ẩn đi */
+/* .menu-marquee span::after {
+  content: attr(data-text);
+  padding-left: 2rem;
+  opacity: 0;
+} */
+
+/* Hover mới bắt đầu animation + hiện bản sao */
+.menu-marquee:hover span {
+  animation: menu-slide 3s linear infinite;
+}
+
+.menu-marquee:hover span::after {
+  opacity: 1;
+}
+
+@keyframes menu-slide {
+  0% {
+    transform: translateX(0);
+  }
+  100% {
+    transform: translateX(-100%);
+  }
+}

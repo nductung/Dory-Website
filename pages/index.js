@@ -119,6 +119,19 @@ const CurveLayer = ({ path, color, zIndex, delay, height }) => {
   );
 };
 
+const MenuButton = ({ onClick, isOpen }) => {
+  return (
+    <button
+      className="btn-menu text-[#F1E306] AristaProBoldtrial px-[18px] py-[15px] rounded-[19px] menu-marquee"
+      onClick={onClick}
+    >
+      <span data-text="MENU" className="AristaProBoldtrial">
+        MENU
+      </span>
+    </button>
+  );
+};
+
 export default function Home() {
   const [isOpen, setIsOpen] = useState(false);
 
@@ -267,12 +280,7 @@ export default function Home() {
       <div className="px-[60px] py-[26px] flex flex-row justify-between items-center">
         <img className="h-55" src="/images/logo.svg" alt="Logo" />
         <div>
-          <button
-            className="btn-menu text-[#F1E306] AristaProBoldtrial px-[18px] py-[15px] rounded-[19px]"
-            onClick={() => setIsOpen(true)}
-          >
-            MENU
-          </button>
+          <MenuButton isOpen={isOpen} onClick={() => setIsOpen(!isOpen)} />
         </div>
       </div>
 
@@ -360,8 +368,7 @@ export default function Home() {
       </div>
 
       {/* Contact Section */}
-      <Contact/>
+      <Contact />
     </div>
   );
 }
-
