@@ -10,7 +10,7 @@ const About = () => {
   const [mount, setMount] = useState(false);
 
   return (
-    <>
+    <div className="bg-primary">
       <div className="relative">
         <p className="font-[700] text-[525px] leading-[451px] text-[#F1E306] text-center">
           DORY
@@ -57,7 +57,7 @@ const About = () => {
       <div className="mt-[200px]">
         <Contact />
       </div>
-    </>
+    </div>
   );
 };
 
