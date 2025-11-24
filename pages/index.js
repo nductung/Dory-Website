@@ -13,9 +13,30 @@ const COLORS = {
 };
 
 // Easing cực mượt (Fluid Motion)
-const TRANSITION = { duration: 0.8, ease: [0.76, 0, 0.24, 1] };
+const TRANSITION = { duration: 1.2, ease: [0.76, 0, 0.24, 1] };
 
-// --- COMPONENT SÓNG (Visual Layer) ---
+// --- FIX: MASKED REVEAL (Hiệu ứng đòn bẩy: Trái cố định, Phải vung lên) ---
+const MaskedReveal = ({ children, delay = 0, className = "" }) => {
+  return (
+    // pb-4 để đảm bảo khi chữ nghiêng không bị cắt mất phần đáy
+    <div className={`overflow-hidden py-4 -my-4 px-2 -mx-2 ${className}`}>
+      <motion.div
+        initial={{ y: "110%", rotate: -5 }} // Bắt đầu: Chìm sâu xuống và Nghiêng đầu phải xuống (-5 độ)
+        animate={{ y: "0%", rotate: 0 }} // Kết thúc: Thẳng hàng
+        transition={{
+          ...TRANSITION,
+          delay: delay,
+        }}
+        // QUAN TRỌNG: Xoay từ góc dưới bên trái -> Tạo cảm giác "lật" từ trái qua phải lên
+        style={{ transformOrigin: "left bottom" }}
+      >
+        {children}
+      </motion.div>
+    </div>
+  );
+};
+
+// --- COMPONENT SÓNG ---
 const CurveLayer = ({ path, color, zIndex, delay, height }) => {
   return (
     <motion.div
@@ -29,7 +50,7 @@ const CurveLayer = ({ path, color, zIndex, delay, height }) => {
       initial={{ y: "-100%" }}
       animate={{ y: "0%" }}
       exit={{ y: "-100%" }}
-      transition={{ ...TRANSITION, delay: delay }}
+      transition={{ ...TRANSITION, duration: 0.8, delay: delay }}
     >
       {/* Container SVG: Dùng preserveAspectRatio="none" để co giãn full chiều ngang */}
       <div className="w-full h-full relative">
@@ -152,7 +173,7 @@ export default function Home() {
               initial={{ y: "-100%" }}
               animate={{ y: "0%" }}
               exit={{ y: "-100%" }}
-              transition={{ ...TRANSITION, delay: 0.2 }}
+              transition={{ ...TRANSITION, duration: 0.8, delay: 0.2 }}
             />
 
             {/* 3. CÁC LỚP SÓNG TRANG TRÍ (Decoration Layers) 
@@ -204,19 +225,41 @@ export default function Home() {
       </div>
 
       {/* Introduction */}
-      <div className="flex flex-col px-[98px] py-[135px]">
-        <LinearGradient
-          className="text-hello AristaProAlternateLighttrial"
-          gradient={["to left", "#F1E306"]}
-        >
-          {`Hello,`}
-        </LinearGradient>
-        <LinearGradient
-          className="text-hello AristaProAlternateLighttrial"
-          gradient={["to left", "#7BC14B ,#F1E306"]}
-        >
-          This is Dory
-        </LinearGradient>
+      <div className="flex flex-col px-[98px] py-[100px]">
+        <MaskedReveal delay={0} className="leading-[189px]">
+          <LinearGradient
+            className="text-hello AristaProAlternateLighttrial p-[4px]"
+            gradient={["to left", "#F1E306"]}
+          >
+            {`Hello,`}
+          </LinearGradient>
+        </MaskedReveal>
+        <div className="flex flex-row gap-[60px]">
+          <MaskedReveal delay={0.15} className="leading-[189px]">
+            <LinearGradient
+              className="text-hello AristaProAlternateLighttrial p-[4px]"
+              gradient={["to left", "#F1E306"]}
+            >
+              {"This"}
+            </LinearGradient>
+          </MaskedReveal>
+          <MaskedReveal delay={0.3} className="leading-[189px]">
+            <LinearGradient
+              className="text-hello AristaProAlternateLighttrial p-[4px]"
+              gradient={["to left", "#F1E306"]}
+            >
+              {"is"}
+            </LinearGradient>
+          </MaskedReveal>
+          <MaskedReveal delay={0.45} className="leading-[189px]">
+            <LinearGradient
+              className="text-hello AristaProAlternateLighttrial p-[4px]"
+              gradient={["to left", "#7BC14B"]}
+            >
+              {"Dory"}
+            </LinearGradient>
+          </MaskedReveal>
+        </div>
       </div>
 
       {/* About Section */}
