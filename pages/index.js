@@ -224,7 +224,7 @@ export default function Home() {
         <p className="AristaProAlternateLighttrial font-[700] text-[88px] leading-[76px] text-center text-[#F1E306]">
           WHO IS DORY?
         </p>
-        <p className="LexendRegular text-center font-[400] text-[#020202]">
+        <p className="LexendRegular text-center font-[400] text-[#020202] text-[28px]">
           Dory is a designer based in Vietnam, driven by curiosity, softness,
           and a little bit of chaos. With a background in Graphic Design and a
           passion for visual storytelling, she explores how colors, forms, and
