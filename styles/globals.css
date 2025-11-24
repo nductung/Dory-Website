@@ -5,7 +5,7 @@
 @import "./markdown.css";
 
 * {
-  font-family: "Hind";
+  font-family: "AristaProAlternateLighttrial";
 }
 
 body {
@@ -74,4 +74,138 @@ body {
   left: 0;
   background: inherit;
   border-radius: inherit;
+}
+
+/*  */
+
+.btn-menu {
+  background: #7bc14b;
+  font-style: normal;
+  font-weight: 700;
+  font-size: 48px;
+  line-height: 41px;
+}
+.text-hello {
+  font-style: normal;
+  font-weight: 700;
+  font-size: 220px;
+  line-height: 189px;
+}
+
+/*  */
+.AristaProAlternateLighttrial {
+  font-family: "AristaProAlternateLighttrial";
+}
+.AristaProBoldtrial {
+  font-family: "AristaProBoldtrial";
+}
+.AristaProFattrial {
+  font-family: "AristaProFattrial";
+}
+.AristaProLighttrial {
+  font-family: "AristaProLighttrial";
+}
+.LexendBold {
+  font-family: "LexendBold";
+}
+.LexendExtraBold {
+  font-family: "LexendExtraBold";
+}
+.LexendExtraLight {
+  font-family: "LexendExtraLight";
+}
+.LexendLight {
+  font-family: "LexendLight";
+}
+.LexendMedium {
+  font-family: "LexendMedium";
+}
+.LexendRegular {
+  font-family: "LexendRegular";
+}
+.LexendSemiBold {
+  font-family: "LexendSemiBold";
+}
+.LexendThin {
+  font-family: "LexendThin";
+}
+
+/* Arista Fonts */
+@font-face {
+  font-family: "AristaProAlternateLighttrial";
+  src: url("/fonts/Arista-Pro-Alternate-Light-trial.ttf") format("truetype");
+  font-weight: 300;
+}
+
+@font-face {
+  font-family: "AristaProBoldtrial";
+  src: url("/fonts/Arista-Pro-Bold-trial.ttf") format("truetype");
+  font-weight: 700;
+}
+
+@font-face {
+  font-family: "AristaProFattrial";
+  src: url("/fonts/Arista-Pro-Fat-trial.ttf") format("truetype");
+  font-weight: 900;
+}
+
+@font-face {
+  font-family: "AristaProLighttrial";
+  src: url("/fonts/Arista-Pro-Light-trial.ttf") format("truetype");
+  font-weight: 300;
+}
+
+/* Lexend Fonts */
+@font-face {
+  font-family: "LexendBlack";
+  src: url("/fonts/Lexend-Black.ttf") format("truetype");
+  font-weight: 900;
+}
+
+@font-face {
+  font-family: "LexendBold";
+  src: url("/fonts/Lexend-Bold.ttf") format("truetype");
+  font-weight: 700;
+}
+
+@font-face {
+  font-family: "LexendExtraBold";
+  src: url("/fonts/Lexend-ExtraBold.ttf") format("truetype");
+  font-weight: 800;
+}
+
+@font-face {
+  font-family: "LexendExtraLight";
+  src: url("/fonts/Lexend-ExtraLight.ttf") format("truetype");
+  font-weight: 200;
+}
+
+@font-face {
+  font-family: "LexendLight";
+  src: url("/fonts/Lexend-Light.ttf") format("truetype");
+  font-weight: 300;
+}
+
+@font-face {
+  font-family: "LexendMedium";
+  src: url("/fonts/Lexend-Medium.ttf") format("truetype");
+  font-weight: 500;
+}
+
+@font-face {
+  font-family: "LexendRegular";
+  src: url("/fonts/Lexend-Regular.ttf") format("truetype");
+  font-weight: 400;
+}
+
+@font-face {
+  font-family: "LexendSemiBold";
+  src: url("/fonts/Lexend-SemiBold.ttf") format("truetype");
+  font-weight: 600;
+}
+
+@font-face {
+  font-family: "LexendThin";
+  src: url("/fonts/Lexend-Thin.ttf") format("truetype");
+  font-weight: 100;
 }

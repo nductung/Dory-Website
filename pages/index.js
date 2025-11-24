@@ -1,141 +1,131 @@
-import { useRef } from "react";
-import Header from "../components/Header";
-import ServiceCard from "../components/ServiceCard";
-import Socials from "../components/Socials";
-import WorkCard from "../components/WorkCard";
-import { useIsomorphicLayoutEffect } from "../utils";
-import { stagger } from "../animations";
-import Footer from "../components/Footer";
-import Head from "next/head";
-import Button from "../components/Button";
-import Link from "next/link";
-import Cursor from "../components/Cursor";
-
-// Local Data
-import data from "../data/portfolio.json";
+import { LinearGradient } from "react-text-gradients";
 
 export default function Home() {
-  // Ref
-  const workRef = useRef();
-  const aboutRef = useRef();
-  const textOne = useRef();
-  const textTwo = useRef();
-  const textThree = useRef();
-  const textFour = useRef();
-
-  // Handling Scroll
-  const handleWorkScroll = () => {
-    window.scrollTo({
-      top: workRef.current.offsetTop,
-      left: 0,
-      behavior: "smooth",
-    });
-  };
-
-  const handleAboutScroll = () => {
-    window.scrollTo({
-      top: aboutRef.current.offsetTop,
-      left: 0,
-      behavior: "smooth",
-    });
-  };
-
-  useIsomorphicLayoutEffect(() => {
-    stagger(
-      [textOne.current, textTwo.current, textThree.current, textFour.current],
-      { y: 40, x: -10, transform: "scale(0.95) skew(10deg)" },
-      { y: 0, x: 0, transform: "scale(1)" }
-    );
-  }, []);
-
+  const listWork = [
+    {
+      title: "Mo Branding",
+      logo: "/images/Mo work.png",
+    },
+    {
+      title: "Men's Folio",
+      logo: "/images/Folio work.png",
+    },
+    {
+      title: "Heineken",
+      logo: "/images/henik work.png",
+    },
+    {
+      title: "Me oi",
+      logo: "/images/meoi work.png",
+    },
+    {
+      title: "Bi Bong Branding",
+      logo: "/images/bibong work.png",
+    },
+  ];
   return (
-    <div className={`relative ${data.showCursor && "cursor-none"}`}>
-      {data.showCursor && <Cursor />}
-      <Head>
-        <title>{data.name}</title>
-      </Head>
-
-      <div className="gradient-circle"></div>
-      <div className="gradient-circle-bottom"></div>
-
-      <div className="container mx-auto mb-10">
-        <Header
-          handleWorkScroll={handleWorkScroll}
-          handleAboutScroll={handleAboutScroll}
+    <div className="max-w-[1440px] w-full">
+      {/*  */}
+      <div className="px-[60px] flex flex-row justify-between items-center py-[26px]">
+        <img className="h-55" src={`/images/${"logo.svg"}`} />
+        <div>
+          <button className="btn-menu  text-[#F1E306] AristaProBoldtrial pl-[18px] pr-[18px] pt-[15px] pb-[13px]  rounded-[19px] ">
+            MENU
+          </button>
+        </div>
+      </div>
+      {/*  */}
+      <div className="flex flex-col px-[98px] py-[135px]">
+        <LinearGradient
+          className="text-hello AristaProAlternateLighttrial"
+          gradient={["to left", "#F1E306"]}
+        >
+          {`Hello,`}
+        </LinearGradient>
+        <LinearGradient
+          className="text-hello AristaProAlternateLighttrial"
+          gradient={["to left", "#7BC14B ,#F1E306"]}
+        >
+          This is Dory
+        </LinearGradient>
+      </div>
+      {/*  */}
+      <div className="bg-[#6956B2] px-[145px] py-[237px] flex flex-col gap-[50px]">
+        <p className="AristaProAlternateLighttrial font-[700] text-[88px] leading-[76px] text-center text-[#F1E306]">
+          WHO IS DORY?
+        </p>
+        <p className="LexendRegular text-center font-[400] text-[#020202]">
+          Dory is a designer based in Vietnam, driven by curiosity, softness,
+          and a little bit of chaos. With a background in Graphic Design and a
+          passion for visual storytelling, she explores how colors, forms, and
+          emotions can shape human experience. Her work moves between clarity
+          and playfulness — blending graphic design, illustration, and brand
+          thinking. Whether it’s a children’s toy concept, a quirky game world,
+          or a clean visual system, Nhi seeks the sweet spot between logic and
+          feeling, intention and instinct. Her portfolio is both a personal
+          space and a design playground — where ideas grow, rules bend, and
+          creativity stays honest.
+        </p>
+      </div>
+      {/*  */}
+      <div className="px-[82px] py-[135px]">
+        <p className="font-[700] text-[88px] leading-[76px] text-[#6956B2] pb-[135px]">
+          Work
+        </p>
+        {listWork.map((item, index) => {
+          return (
+            <div
+              className="flex flex-col h-[132px]"
+              key={"listWork_" + item?.toString() + index}
+            >
+              <div className="relative group flex items-center justify-between cursor-pointer overflow-hidden">
+                <span className="font-[700] text-[48px] leading-[41px] text-[#7BC14B] transition-transform duration-300 group-hover:translate-x-4">
+                  {item.title}
+                </span>
+                <img
+                  src={item.logo}
+                  alt={item.title}
+                  className="h-[132px] w-[132px] opacity-0 scale-50 group-hover:opacity-100 group-hover:scale-100 transition-all duration-300"
+                />
+              </div>
+            </div>
+          );
+        })}
+      </div>
+      {/*  */}
+      <div className="px-[122px] pt-[244px] pb-[398px] relative">
+        <p className="font-[700] text-[188px] leading-[200px] text-[#F1E306]">
+          TELL ME
+          <br />
+          YOUR IDEAS
+        </p>
+        <div className="absolute top-[260px] right-[122px] flex flex-col gap-[16px]">
+          <a
+            href="https://www.google.com/maps/search/?api=1&query=A.+La+Khe,+Ha+Dong,+Ha+Noi"
+            target="_blank"
+            rel="noopener noreferrer"
+            className="LexendRegular font-[400] text-[21px] leading-[26px] text-right text-[#7BC14B] hover:underline"
+          >
+            A. La Khe, Ha Dong, Ha Noi
+          </a>
+          <a
+            href="mailto:dobaonhi7@gmail.com"
+            className="LexendRegular font-[400] text-[21px] leading-[26px] text-right text-[#F1E306] hover:underline"
+          >
+            E. dobaonhi7@gmail.com
+          </a>
+          <a
+            href="tel:+84981345258"
+            className="LexendRegular font-[400] text-[21px] leading-[26px] text-right text-[#6956B2] hover:underline"
+          >
+            P. (+84) 981 345 258
+          </a>
+        </div>
+        <img
+          src="/images/elemts.svg"
+          alt="elemts"
+          className="absolute bottom-0 left-0 w-full h-auto"
         />
-        <div className="laptop:mt-20 mt-10">
-          <div className="mt-5">
-            <h1
-              ref={textOne}
-              className="text-3xl tablet:text-6xl laptop:text-6xl laptopl:text-8xl p-1 tablet:p-2 text-bold w-4/5 mob:w-full laptop:w-4/5"
-            >
-              {data.headerTaglineOne}
-            </h1>
-            <h1
-              ref={textTwo}
-              className="text-3xl tablet:text-6xl laptop:text-6xl laptopl:text-8xl p-1 tablet:p-2 text-bold w-full laptop:w-4/5"
-            >
-              {data.headerTaglineTwo}
-            </h1>
-            <h1
-              ref={textThree}
-              className="text-3xl tablet:text-6xl laptop:text-6xl laptopl:text-8xl p-1 tablet:p-2 text-bold w-full laptop:w-4/5"
-            >
-              {data.headerTaglineThree}
-            </h1>
-            <h1
-              ref={textFour}
-              className="text-3xl tablet:text-6xl laptop:text-6xl laptopl:text-8xl p-1 tablet:p-2 text-bold w-full laptop:w-4/5"
-            >
-              {data.headerTaglineFour}
-            </h1>
-          </div>
-
-          <Socials className="mt-2 laptop:mt-5" />
-        </div>
-        <div className="mt-10 laptop:mt-30 p-2 laptop:p-0" ref={workRef}>
-          <h1 className="text-2xl text-bold">Work.</h1>
-
-          <div className="mt-5 laptop:mt-10 grid grid-cols-1 tablet:grid-cols-2 gap-4">
-            {data.projects.map((project) => (
-              <WorkCard
-                key={project.id}
-                img={project.imageSrc}
-                name={project.title}
-                description={project.description}
-                onClick={() => window.open(project.url)}
-              />
-            ))}
-          </div>
-        </div>
-
-        <div className="mt-10 laptop:mt-30 p-2 laptop:p-0">
-          <h1 className="tablet:m-10 text-2xl text-bold">Services.</h1>
-          <div className="mt-5 tablet:m-10 grid grid-cols-1 laptop:grid-cols-2 gap-6">
-            {data.services.map((service, index) => (
-              <ServiceCard
-                key={index}
-                name={service.title}
-                description={service.description}
-              />
-            ))}
-          </div>
-        </div>
-        {/* This button should not go into production */}
-        {process.env.NODE_ENV === "development" && (
-          <div className="fixed bottom-5 right-5">
-            <Link href="/edit">
-              <Button type="primary">Edit Data</Button>
-            </Link>
-          </div>
-        )}
-        <div className="mt-10 laptop:mt-40 p-2 laptop:p-0" ref={aboutRef}>
-          <h1 className="tablet:m-10 text-2xl text-bold">About.</h1>
-          <p className="tablet:m-10 mt-2 text-xl laptop:text-3xl w-full laptop:w-3/5">
-            {data.aboutpara}
-          </p>
-        </div>
-        <Footer />
       </div>
     </div>
   );

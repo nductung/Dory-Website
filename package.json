@@ -23,6 +23,7 @@
     "react-dom": "18.1.0",
     "react-markdown": "^8.0.3",
     "react-syntax-highlighter": "^15.5.0",
+    "react-text-gradients": "^1.0.2",
     "react-textarea-autosize": "^8.3.4",
     "remark": "^14.0.2",
     "remark-html": "^15.0.1",
