@@ -208,7 +208,7 @@ export default function Home() {
               animate="show"
               exit="hidden"
             >
-              <div className="flex flex-col gap-2 mb-20 gap-[20px]">
+              <div className="flex flex-col gap-2 mb-20 gap-[20px] mob:mb-40">
                 {/* Margin top để tránh các lớp sóng phía trên */}
                 {menuItems.map((item, i) => (
                   <div key={i} className="overflow-hidden">
@@ -221,7 +221,7 @@ export default function Home() {
                         }
                       }}
                       variants={itemVars}
-                      className="AristaProAlternateLighttrial font-[700] text-[104px] leading-[89px] text-[#6956B2]"
+                      className="AristaProAlternateLighttrial font-[700] text-[104px] leading-[89px] text-[#6956B2] mob:text-[52px]"
                       style={{}}
                     >
                       {item.title}
@@ -277,7 +277,7 @@ export default function Home() {
       </AnimatePresence>
 
       {/* Header */}
-      <div className="px-[60px] py-[26px] flex flex-row justify-between items-center">
+      <div className="px-[60px] py-[26px] flex flex-row justify-between items-center mob:px-[30px]">
         <img className="h-55" src="/images/logo.svg" alt="Logo" />
         <div>
           <MenuButton isOpen={isOpen} onClick={() => setIsOpen(!isOpen)} />
@@ -285,35 +285,44 @@ export default function Home() {
       </div>
 
       {/* Introduction */}
-      <div className="px-[98px] py-[100px] flex flex-col ">
-        <MaskedReveal delay={0} className="leading-[189px]">
+      <div className="px-[98px] py-[100px] flex flex-col mob:px-[25px]">
+        <MaskedReveal delay={0} className="leading-[189px] mob:leading-[90px]">
           <LinearGradient
-            className="text-hello AristaProAlternateLighttrial p-[4px]"
+            className="text-hello AristaProAlternateLighttrial p-[4px] mob:text-[80px]"
             gradient={["to left", "#F1E306"]}
           >
             {`Hello,`}
           </LinearGradient>
         </MaskedReveal>
-        <div className="flex flex-row gap-[60px]">
-          <MaskedReveal delay={0.15} className="leading-[189px]">
+        <div className="flex flex-row gap-[60px] mob:gap-[20px]">
+          <MaskedReveal
+            delay={0.15}
+            className="leading-[189px] mob:leading-[90px]"
+          >
             <LinearGradient
-              className="text-hello AristaProAlternateLighttrial p-[4px]"
+              className="text-hello AristaProAlternateLighttrial p-[4px] mob:text-[80px]"
               gradient={["to left", "#F1E306"]}
             >
               {"This"}
             </LinearGradient>
           </MaskedReveal>
-          <MaskedReveal delay={0.3} className="leading-[189px]">
+          <MaskedReveal
+            delay={0.3}
+            className="leading-[189px] mob:leading-[90px]"
+          >
             <LinearGradient
-              className="text-hello AristaProAlternateLighttrial p-[4px]"
+              className="text-hello AristaProAlternateLighttrial p-[4px] mob:text-[80px]"
               gradient={["to left", "#F1E306"]}
             >
               {"is"}
             </LinearGradient>
           </MaskedReveal>
-          <MaskedReveal delay={0.45} className="leading-[189px]">
+          <MaskedReveal
+            delay={0.45}
+            className="leading-[189px] mob:leading-[90px]"
+          >
             <LinearGradient
-              className="text-hello AristaProAlternateLighttrial p-[4px]"
+              className="text-hello AristaProAlternateLighttrial p-[4px] mob:text-[80px]"
               gradient={["to left", "#7BC14B"]}
             >
               {"Dory"}
@@ -323,12 +332,12 @@ export default function Home() {
       </div>
 
       {/* About Section */}
-      <div className="px-[145px] py-[145px] bg-[#6956B2] flex flex-col gap-[50px]">
-        <p className="AristaProAlternateLighttrial font-[700] text-[88px] leading-[76px] text-center text-[#F1E306]">
+      <div className="px-[145px] py-[145px] bg-[#6956B2] flex flex-col gap-[50px] mob:px-[30px] mob:py-[90px]">
+        <p className="AristaProAlternateLighttrial font-[700] text-[88px] leading-[76px] text-center text-[#F1E306] ">
           WHO IS DORY?
         </p>
         {/* Khối text được căn giữa, chiều rộng giới hạn để giống layout tạp chí */}
-        <div className="flex flex-col items-center gap-[0.2em] max-w-[90%]">
+        <div className="flex flex-col items-center gap-[0.2em] max-w-[90%] mob:max-w-[100%]">
           {aboutLines.map((line, index) => (
             <TextLineReveal
               key={index}
@@ -344,7 +353,7 @@ export default function Home() {
       </div>
 
       {/* Work Section - ĐÃ CẬP NHẬT HIỆU ỨNG TRÁI QUA PHẢI + LẶP LẠI */}
-      <div className="px-[82px] py-[135px]">
+      <div className="px-[82px] py-[135px] mob:px-[30px] mob:py-[90px]">
         <p className="font-[700] text-[88px] leading-[76px] text-[#6956B2] pb-[100px]">
           Work
         </p>
