@@ -1,119 +1,152 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import { motion } from "framer-motion";
 
-// Giả lập 10 thẻ (5 cặp)
 const cards = [
   { id: 1, color: "bg-red-400", label: "Pair 1" },
   { id: 2, color: "bg-red-300", label: "Pair 1" },
-
   { id: 3, color: "bg-orange-400", label: "Pair 2" },
   { id: 4, color: "bg-orange-300", label: "Pair 2" },
-
-  { id: 5, color: "bg-green-500", label: "WINNER" }, // Cặp ở giữa
-  { id: 6, color: "bg-green-400", label: "WINNER" }, // Cặp ở giữa
-
+  { id: 5, color: "bg-green-500", label: "WINNER" },
+  { id: 6, color: "bg-green-400", label: "WINNER" },
   { id: 7, color: "bg-blue-400", label: "Pair 4" },
   { id: 8, color: "bg-blue-300", label: "Pair 4" },
-
   { id: 9, color: "bg-purple-400", label: "Pair 5" },
   { id: 10, color: "bg-purple-300", label: "Pair 5" },
 ];
 
-export default function CardFilterEffect() {
-  // State kiểm soát giai đoạn: "scatter" (tỏa ra) -> "filter" (bay đi)
+const TOTAL_PAIRS = 5;
+const RADIUS = 400;
+const ANIMATION_DURATION = 800;
+
+// --- CẤU HÌNH ĐỘ NHẠY ---
+// Số pixel cần cuộn để kích hoạt chuyển đổi.
+// Tăng số này lên = Cần cuộn nhiều hơn (Nặng hơn)
+// Giảm số này xuống = Nhạy hơn
+const SCROLL_THRESHOLD = 150;
+
+export default function LessSensitiveWheel() {
   const [animationStep, setAnimationStep] = useState("scatter");
+  const [activeIndex, setActiveIndex] = useState(2);
+
+  const isLocked = useRef(false);
+
+  // Ref để tích lũy quãng đường cuộn
+  const scrollAccumulator = useRef(0);
+
+  // Ref để reset tích lũy nếu người dùng dừng cuộn giữa chừng
+  const resetTimeout = useRef(null);
 
   useEffect(() => {
-    // Giai đoạn 1: Tự động chạy "scatter" khi load (mặc định)
-
-    // Giai đoạn 2: Sau 3 giây, kích hoạt "filter"
-    const timer = setTimeout(() => {
-      setAnimationStep("filter");
-    }, 3000);
-
-    return () => clearTimeout(timer);
+    const t1 = setTimeout(() => setAnimationStep("filter"), 2000);
+    const t2 = setTimeout(() => setAnimationStep("wheel"), 4000);
+    return () => {
+      clearTimeout(t1);
+      clearTimeout(t2);
+    };
   }, []);
 
+  useEffect(() => {
+    const handleWheel = (e) => {
+      if (animationStep !== "wheel" || isLocked.current) return;
+
+      // 1. CỘNG DỒN QUÃNG ĐƯỜNG CUỘN
+      scrollAccumulator.current += e.deltaY;
+
+      // (Optional) Reset tích lũy nếu ngừng cuộn quá 200ms (tránh bị kẹt tích lũy cũ)
+      clearTimeout(resetTimeout.current);
+      resetTimeout.current = setTimeout(() => {
+        scrollAccumulator.current = 0;
+      }, 200);
+
+      // 2. KIỂM TRA NGƯỠNG (THRESHOLD)
+      // Chỉ khi giá trị tuyệt đối vượt quá ngưỡng mới kích hoạt
+      if (Math.abs(scrollAccumulator.current) > SCROLL_THRESHOLD) {
+        // --- BẮT ĐẦU KHÓA ---
+        isLocked.current = true;
+
+        // Xác định hướng dựa trên tổng quãng đường đã tích lũy
+        // (Dương là xuống, Âm là lên)
+        const direction = scrollAccumulator.current > 0 ? 1 : -1;
+
+        setActiveIndex((prev) => {
+          let next = prev + direction;
+          if (next >= TOTAL_PAIRS) next = 0;
+          if (next < 0) next = TOTAL_PAIRS - 1;
+          return next;
+        });
+
+        // Reset biến tích lũy về 0 ngay lập tức để chuẩn bị cho lần sau
+        scrollAccumulator.current = 0;
+
+        // --- MỞ KHÓA SAU KHI ANIMATION KẾT THÚC ---
+        setTimeout(() => {
+          isLocked.current = false;
+        }, ANIMATION_DURATION);
+      }
+    };
+
+    window.addEventListener("wheel", handleWheel, { passive: false });
+    return () => window.removeEventListener("wheel", handleWheel);
+  }, [animationStep]);
+
   const cardVariants = {
-    // --- PHASE 0: Ẩn dưới đáy ---
-    hidden: {
-      y: "120vh",
-      x: 0,
-      opacity: 0,
-      rotate: 0,
-    },
+    hidden: { y: "120vh", x: 0, opacity: 0, rotate: 0 },
 
-    // --- PHASE 1: Bay lên và Tỏa ra (Scatter) ---
-    scatter: (index) => {
-      // Logic rải ngẫu nhiên cũ
-      const spreadX = (index - 5) * 60 + (Math.random() * 40 - 20);
-      const spreadY = (index % 2 === 0 ? -1 : 1) * (Math.random() * 100 + 50);
+    scatter: (index) => ({
+      x: (index - 5) * 60 + (Math.random() * 40 - 20),
+      y: (index % 2 === 0 ? -1 : 1) * (Math.random() * 100 + 50),
+      opacity: 1,
+      scale: 1,
+      rotate: Math.random() * 40 - 20,
+      transition: { delay: Math.floor(index / 2) * 0.1, type: "spring" },
+    }),
 
+    filter: (index) => {
+      if (index < 4)
+        return { x: "-120vw", opacity: 0, transition: { duration: 1 } };
+      if (index > 5)
+        return { x: "120vw", opacity: 0, transition: { duration: 1 } };
       return {
-        x: spreadX,
-        y: spreadY,
+        x: index === 4 ? -20 : 20,
+        y: 0,
+        scale: 1.3,
+        rotate: index === 4 ? -5 : 5,
         opacity: 1,
-        scale: 1,
-        rotate: Math.random() * 40 - 20,
-        transition: {
-          delay: Math.floor(index / 2) * 0.2, // Bay từng cặp
-          type: "spring",
-          stiffness: 60,
-        },
+        zIndex: 10,
+        transition: { duration: 1, type: "spring" },
       };
     },
 
-    // --- PHASE 2: Sàng lọc (Filter) ---
-    filter: (index) => {
-      // 1. NHÓM TRÁI (Cặp 1 & 2 - Index 0,1,2,3)
-      if (index < 4) {
-        return {
-          x: "-120vw", // Bay tít sang trái màn hình
-          y: 0,
-          opacity: 0, // Mờ dần
-          rotate: -90, // Xoay nhẹ khi bay
-          transition: { duration: 1.5, ease: "easeInOut", delay: 0.1 * index },
-        };
-      }
+    wheel: (index) => {
+      const pairIndex = Math.floor(index / 2);
+      let diff = pairIndex - activeIndex;
+      if (diff > TOTAL_PAIRS / 2) diff -= TOTAL_PAIRS;
+      if (diff < -TOTAL_PAIRS / 2) diff += TOTAL_PAIRS;
 
-      // 2. NHÓM PHẢI (Cặp 4 & 5 - Index 6,7,8,9)
-      else if (index > 5) {
-        return {
-          x: "120vw", // Bay tít sang phải màn hình
-          y: 0,
-          opacity: 0,
-          rotate: 90,
-          transition: {
-            duration: 1.5,
-            ease: "easeInOut",
-            delay: 0.1 * (index - 6),
-          },
-        };
-      }
+      const isActive = diff === 0;
+      const angle = diff * 45;
+      const rad = (angle * Math.PI) / 180;
 
-      // 3. NHÓM GIỮA (Cặp 3 - Index 4,5) -> Ở LẠI
-      else {
-        return {
-          x: index === 4 ? -20 : 20, // Tách nhẹ ra 2 bên tí xíu để thấy là 2 thẻ
-          y: 0,
-          scale: 1.3, // Phóng to lên làm tiêu điểm
-          rotate: index === 4 ? -5 : 5, // Xoay đối xứng đẹp mắt
-          opacity: 1,
-          zIndex: 100, // Đẩy lên trên cùng
-          transition: {
-            duration: 1,
-            type: "spring",
-            stiffness: 100,
-            delay: 0.5, // Chờ các thẻ kia bay đi rồi mới phóng to
-          },
-        };
-      }
+      return {
+        x: RADIUS * Math.sin(rad),
+        y: isActive ? 0 : RADIUS * (1 - Math.cos(rad)) + 100,
+
+        opacity: isActive ? 1 : 0,
+        scale: isActive ? 1.4 : 0.6,
+
+        rotate: angle + (index % 2 === 0 ? -5 : 5),
+        zIndex: isActive ? 100 : 0,
+
+        transition: {
+          duration: ANIMATION_DURATION / 1000,
+          ease: "easeInOut",
+        },
+      };
     },
   };
 
   return (
-    <div className="h-screen w-full bg-slate-900 flex items-center justify-center overflow-hidden relative">
-      {/* Container */}
+    <div className="h-screen w-full bg-[#0F172A] flex items-center justify-center overflow-hidden relative">
       <div className="relative w-10 h-10 flex items-center justify-center">
         {cards.map((card, index) => (
           <motion.div
@@ -121,28 +154,49 @@ export default function CardFilterEffect() {
             custom={index}
             variants={cardVariants}
             initial="hidden"
-            animate={animationStep} // Biến state quyết định đang ở phase nào
-            className={`absolute w-56 h-64 rounded-2xl shadow-2xl flex flex-col items-center justify-center p-4 border-4 border-white/90 ${card.color}`}
-            style={{ zIndex: index }}
+            animate={animationStep}
+            className={`absolute w-56 h-64 rounded-2xl flex flex-col items-center justify-center p-4 border-[3px] border-white/80 shadow-2xl ${card.color}`}
+            style={{ transformOrigin: "center 150%" }}
           >
-            <div className="w-full h-2/3 bg-white/20 rounded-lg mb-2 backdrop-blur-sm" />
-            <div className="text-slate-900 font-bold text-xl">{card.label}</div>
+            <div className="w-full h-3/5 bg-white/20 rounded-lg mb-3 backdrop-blur-sm" />
+            <div className="text-slate-900 font-bold text-2xl">
+              {card.label}
+            </div>
+
+            {animationStep === "wheel" &&
+              Math.floor(index / 2) === activeIndex && (
+                <motion.div
+                  initial={{ opacity: 0, y: -20 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  transition={{ delay: 0.2 }}
+                  className="absolute -top-12 bg-white text-slate-900 px-3 py-1 rounded-full font-bold text-xs tracking-widest uppercase shadow-lg"
+                >
+                  Current
+                </motion.div>
+              )}
           </motion.div>
         ))}
       </div>
 
-      {/* Text trạng thái */}
-      <div className="absolute bottom-10 text-white/60 text-center">
-        {animationStep === "scatter"
-          ? "Phase 1: Scattering..."
-          : "Phase 2: Filtering Winners"}
-        <br />
-        <button
-          onClick={() => window.location.reload()}
-          className="mt-2 underline hover:text-white"
-        >
-          Replay
-        </button>
+      {animationStep === "wheel" && (
+        <div className="absolute bottom-20 flex gap-4 z-50">
+          {Array.from({ length: TOTAL_PAIRS }).map((_, i) => (
+            <div
+              key={i}
+              className={`transition-all duration-500 rounded-full border border-white/40 ${
+                i === activeIndex
+                  ? "bg-white w-4 h-4"
+                  : "bg-transparent w-2 h-2"
+              }`}
+            />
+          ))}
+        </div>
+      )}
+
+      <div className="absolute bottom-10 text-white/30 text-center text-sm font-mono uppercase">
+        {animationStep === "wheel"
+          ? "Scroll Distance Required to Switch"
+          : "Loading..."}
       </div>
     </div>
   );
