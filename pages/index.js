@@ -168,11 +168,23 @@ export default function Home() {
     },
   };
   const listWork = [
-    { title: "Mo Branding", logo: "/images/Mo work.png" },
-    { title: "Men's Folio", logo: "/images/Folio work.png" },
-    { title: "Heineken", logo: "/images/henik work.png" },
-    { title: "Me oi", logo: "/images/meoi work.png" },
-    { title: "Bi Bong Branding", logo: "/images/bibong work.png" },
+    { title: "Mo Branding", logo: "/images/Mo work.png", href: "/work/mo" },
+    {
+      title: "Men's Folio",
+      logo: "/images/Folio work.png",
+      href: "/work/folio",
+    },
+    {
+      title: "Heineken",
+      logo: "/images/henik work.png",
+      href: "/work/heineken",
+    },
+    { title: "Me oi", logo: "/images/meoi work.png", href: "/work/meoi" },
+    {
+      title: "Bi Bong Branding",
+      logo: "/images/bibong work.png",
+      href: "/work/bibong",
+    },
   ];
 
   const menuItems = [
@@ -360,7 +372,10 @@ export default function Home() {
         {listWork.map((item, index) => (
           // Bọc mỗi item trong WorkReveal
           <WorkReveal key={`listWork_${index}`} delay={0.1}>
-            <div className="flex flex-col h-[132px]">
+            <div
+              className="flex flex-col h-[132px]"
+              onClick={() => window.open(item.href, "_blank")}
+            >
               <div className="relative group flex items-center justify-between cursor-pointer overflow-hidden">
                 <span className="font-[700] text-[48px] leading-[41px] text-[#7BC14B] transition-transform duration-300 group-hover:translate-x-4">
                   {item.title}
