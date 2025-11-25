@@ -337,7 +337,7 @@ export default function Home() {
           WHO IS DORY?
         </p>
         {/* Khối text được căn giữa, chiều rộng giới hạn để giống layout tạp chí */}
-        <div className="flex flex-col items-center gap-[0.2em] max-w-[90%] mob:max-w-[100%]">
+        <div className="flex flex-col items-center gap-[0.2em] max-w-[100%]">
           {aboutLines.map((line, index) => (
             <TextLineReveal
               key={index}
