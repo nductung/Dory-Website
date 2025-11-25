@@ -288,7 +288,7 @@ export default function Home() {
       <div className="px-[98px] py-[100px] flex flex-col mob:px-[25px]">
         <MaskedReveal delay={0} className="leading-[189px] mob:leading-[90px]">
           <LinearGradient
-            className="text-hello AristaProAlternateLighttrial p-[4px] mob:text-[80px]"
+            className="text-hello AristaProAlternateLighttrial p-[4px] mob:text-[18vw]"
             gradient={["to left", "#F1E306"]}
           >
             {`Hello,`}
@@ -300,7 +300,7 @@ export default function Home() {
             className="leading-[189px] mob:leading-[90px]"
           >
             <LinearGradient
-              className="text-hello AristaProAlternateLighttrial p-[4px] mob:text-[80px]"
+              className="text-hello AristaProAlternateLighttrial p-[4px] mob:text-[18vw]"
               gradient={["to left", "#F1E306"]}
             >
               {"This"}
@@ -311,7 +311,7 @@ export default function Home() {
             className="leading-[189px] mob:leading-[90px]"
           >
             <LinearGradient
-              className="text-hello AristaProAlternateLighttrial p-[4px] mob:text-[80px]"
+              className="text-hello AristaProAlternateLighttrial p-[4px] mob:text-[18vw]"
               gradient={["to left", "#F1E306"]}
             >
               {"is"}
@@ -322,7 +322,7 @@ export default function Home() {
             className="leading-[189px] mob:leading-[90px]"
           >
             <LinearGradient
-              className="text-hello AristaProAlternateLighttrial p-[4px] mob:text-[80px]"
+              className="text-hello AristaProAlternateLighttrial p-[4px] mob:text-[18vw]"
               gradient={["to left", "#7BC14B"]}
             >
               {"Dory"}
