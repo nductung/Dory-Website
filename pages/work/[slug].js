@@ -32,7 +32,7 @@ const BlogPost = ({ post }) => {
               
               // 3. Thời gian và độ mượt
               transition={{ 
-                duration: 0.8, 
+                duration: 1, 
                 ease: "easeOut" 
               }}
               
