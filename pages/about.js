@@ -12,7 +12,7 @@ const About = () => {
   return (
     <div className="bg-primary">
       <div className="relative">
-        <p className="font-[700] text-[525px] leading-[451px] text-[#F1E306] text-center">
+        <p className="font-[700] text-[525px] leading-[451px] text-[#F1E306] text-center mob:text-[40vw]">
           DORY
         </p>
         {/* --- CONTAINER CHO ẢNH VÀ TEXT --- */}
@@ -45,7 +45,7 @@ const About = () => {
           </p>
         </div>
       </div>
-      <div className="mt-[236px] flex w-full justify-between px-[82px]">
+      <div className="mt-[236px] flex w-full justify-between px-[82px] mob:px-[30px]">
         <p className="LexendLight font-[300] text-[28px] leading-[35px] text-[#6956B2] max-w-[33vw] text-left">
           {`Through every project, I aim to turn creativity into something that sparks joy and connection`}
         </p>
