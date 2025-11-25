@@ -1,21 +1,8 @@
-import { useRef, useState } from "react";
 import { getPostBySlug, getAllPosts } from "../../utils/api";
-import { useRouter } from "next/router";
 import data from "../../data/portfolio.json";
 import Contact from "../../components/Contact";
 
 const BlogPost = ({ post }) => {
-  const [showEditor, setShowEditor] = useState(false);
-  const textOne = useRef();
-  const textTwo = useRef();
-  const router = useRouter();
-
-  // useIsomorphicLayoutEffect(() => {
-  //   stagger([textOne.current, textTwo.current], { y: 30 }, { y: 0 });
-  // }, []);
-
-  console.log(post.slug);
-  console.log();
   const work = data.work[post.slug];
 
   if (!work) return <div className="bg-primary" />;
