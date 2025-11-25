@@ -2,66 +2,94 @@ import React, { useRef, useState, useEffect } from "react";
 import { motion, useScroll, useTransform, useSpring } from "framer-motion";
 import Contact from "../../components/Contact";
 
-const cards = Array.from({ length: 10 }, (_, i) => i);
+const cards = [
+  { id: 1, color: "bg-red-400" },
+  { id: 2, color: "bg-orange-300" },
+  { id: 3, color: "bg-yellow-200" },
+  { id: 4, color: "bg-lime-300" },
+  { id: 5, color: "bg-green-400" },
+  { id: 6, color: "bg-teal-300" },
+  { id: 7, color: "bg-cyan-300" },
+  { id: 8, color: "bg-blue-400" },
+  { id: 9, color: "bg-indigo-300" },
+  { id: 10, color: "bg-purple-400" },
+];
 
-const cardVariants = {
-  hidden: {
-    y: "110vh", // Bắt đầu từ dưới màn hình
-    opacity: 0,
-    rotate: 0,
-  },
-  visible: (index) => ({
-    y: 0,
-    opacity: 1,
-    // Vẫn giữ xoay ngẫu nhiên để thấy rõ là có nhiều thẻ chồng lên nhau
-    rotate: Math.random() * 20 - 10,
-
-    transition: {
-      // --- LOGIC QUAN TRỌNG NHẤT Ở ĐÂY ---
-      // Math.floor(index / 2): Gom nhóm 2 thẻ thành 1 cặp
-      // * 0.4: Mỗi cặp cách nhau 0.4 giây
-      delay: Math.floor(index / 2) * 0.4,
-
-      type: "spring",
-      stiffness: 100,
-      damping: 20,
-      duration: 0.8,
+function CardFountain() {
+  const cardVariants = {
+    // 1. Xuất phát: Ở dưới đáy màn hình và ở giữa
+    hidden: {
+      y: "110vh",
+      x: 0,
+      opacity: 0,
+      scale: 0.5,
+      rotate: 0,
     },
-  }),
-};
 
-function PairCardAnimation() {
+    // 2. Điểm đến: Bay thẳng đến vị trí toả ra
+    visible: (index) => {
+      // Tính toán vị trí ngẫu nhiên (Scatter Logic)
+      // X: Rải đều từ trái qua phải
+      const spreadX =
+        (index - cards.length / 2) * 60 + (Math.random() * 40 - 20);
+
+      // Y: Rải ngẫu nhiên lên xuống xung quanh tâm
+      const spreadY = (index % 2 === 0 ? -1 : 1) * (Math.random() * 100 + 50);
+
+      // Góc xoay ngẫu nhiên
+      const rotation = Math.random() * 60 - 30;
+
+      return {
+        x: spreadX,
+        y: spreadY,
+        opacity: 1,
+        scale: 1,
+        rotate: rotation,
+
+        transition: {
+          // Logic cặp: 2 thẻ bay lên cùng lúc
+          // Mỗi cặp cách nhau 0.2 giây (nhanh hơn để tạo cảm giác tuôn trào)
+          delay: Math.floor(index / 2) * 0.2,
+
+          type: "spring",
+          stiffness: 70, // Độ nảy lò xo
+          damping: 15, // Độ cản (giảm rung)
+          mass: 1.2, // Độ nặng (tạo cảm giác vật lý)
+        },
+      };
+    },
+  };
+
   return (
-    <div className="h-screen w-full bg-gray-900 flex items-center justify-center overflow-hidden">
-      <div className="relative w-64 h-96">
-        {cards.map((index) => (
+    <div className="h-screen w-full bg-[#051f10] flex items-center justify-center overflow-hidden relative">
+      {/* Container trung tâm */}
+      <div className="relative flex items-center justify-center">
+        {cards.map((card, index) => (
           <motion.div
-            key={index}
-            custom={index} // Truyền index vào để tính toán delay
+            key={card.id}
+            custom={index}
             variants={cardVariants}
-            initial="hidden"
-            animate="visible"
-            className="absolute top-0 left-0 w-full h-full bg-white rounded-2xl shadow-2xl border border-gray-200 flex flex-col items-center justify-center"
+            initial="hidden" // Bắt đầu ở dưới
+            animate="visible" // Bay thẳng đến vị trí toả ra
+            className={`absolute w-56 h-56 rounded-xl shadow-2xl flex flex-col items-center justify-center p-4 border-[3px] border-white/80 ${card.color}`}
             style={{
               zIndex: index,
-              // Thêm màu sắc nhẹ để dễ phân biệt các lớp khi chồng lên nhau
-              backgroundColor: index % 2 === 0 ? "#fff" : "#f8fafc",
+              transformOrigin: "center center",
             }}
           >
-            <div className="text-4xl mb-2">🃏</div>
-            <div className="text-slate-800 font-bold text-xl">
-              Card {index + 1}
-            </div>
-            <p className="text-xs text-gray-400 mt-2">
-              {/* Hiển thị nhóm để bạn dễ debug */}
-              Nhóm: {Math.floor(index / 2) + 1}
-            </p>
+            {/* Giả lập nội dung */}
+            <div className="w-full h-3/4 bg-white/20 rounded-lg mb-2 backdrop-blur-sm"></div>
           </motion.div>
         ))}
       </div>
 
-      <div className="absolute bottom-10 text-white text-center opacity-60">
-        <p>Mỗi lần bay lên 2 lá bài</p>
+      <div className="absolute bottom-10 text-white/40 text-sm">
+        <button
+          onClick={() => window.location.reload()}
+          className="hover:text-white transition"
+        >
+          Reload Animation
+        </button>
       </div>
     </div>
   );
@@ -70,7 +98,7 @@ function PairCardAnimation() {
 export default function Work() {
   return (
     <div className="bg-primary">
-      <PairCardAnimation />
+      <CardFountain />
     </div>
   );
 }
