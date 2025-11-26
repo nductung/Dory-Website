@@ -27,7 +27,7 @@ const cards = [
     label: "Pair 5",
     img: "/images/work/meoi/bibong2 2.png",
     bg: "/images/work/meoi/henback 1.png",
-     href: "/work/meoi" 
+    href: "/work/meoi",
   },
   {
     id: 4,
@@ -35,7 +35,7 @@ const cards = [
     label: "Pair 5",
     img: "/images/work/meoi/[Copy] Mo work.png",
     bg: "/images/work/meoi/henback 1.png",
-     href: "/work/meoi" 
+    href: "/work/meoi",
   },
   {
     id: 5,
@@ -43,7 +43,7 @@ const cards = [
     label: "WINNER",
     img: "/images/work/mo/bibong2 2.png",
     bg: "/images/work/mo/henback 1.png",
-    href: "/work/mo"
+    href: "/work/mo",
   },
   {
     id: 6,
@@ -51,7 +51,7 @@ const cards = [
     label: "WINNER",
     img: "/images/work/mo/[Copy] Mo work.png",
     bg: "/images/work/mo/henback 1.png",
-    href: "/work/mo"
+    href: "/work/mo",
   },
 
   {
@@ -295,7 +295,9 @@ export default function LessSensitiveWheel() {
     <div className="bg-primary relative w-full h-screen overflow-hidden">
       <motion.div
         // 1. Đổi 'w-full' và 'text-center' thành 'w-max' để khung bao vừa khít nội dung
-        className={`fixed z-40 w-max pointer-events-none ${showFooter ? "hidden" : ""}`}
+        className={`fixed z-40 w-max pointer-events-none ${
+          showFooter ? "hidden" : ""
+        }`}
         variants={textVariants}
         initial="intro-start"
         animate={animationStep} // Text di chuyển theo các bước animation
@@ -336,7 +338,11 @@ export default function LessSensitiveWheel() {
           </div>
 
           <div className="relative z-10 w-full h-full flex items-center justify-center">
-            <div className={`relative w-10 h-10 flex items-center justify-center ${animationStep === "wheel" ? "mt-[200px]" : ""}`}>
+            <div
+              className={`relative w-10 h-10 flex items-center justify-center ${
+                animationStep === "wheel" ? "mt-[200px]" : ""
+              }`}
+            >
               {cards.map((card, index) => (
                 <motion.div
                   key={card.id}
