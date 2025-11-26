@@ -1,4 +1,5 @@
 import { motion, AnimatePresence } from "framer-motion";
+import Router, { useRouter } from "next/router";
 
 // --- CONFIG ---
 const COLORS = {
@@ -68,6 +69,8 @@ const MenuButton = ({ onClick, isOpen }) => {
 };
 
 const Header = ({ isOpen, setIsOpen, indexHeader }) => {
+  const router = useRouter();
+
   const menuItems = [
     { title: "Home", href: "/" },
     { title: "About me", href: "/about" },
@@ -180,7 +183,9 @@ const Header = ({ isOpen, setIsOpen, indexHeader }) => {
 
       {/* Header */}
       <div className="px-[60px] py-[26px] flex flex-row justify-between items-center mob:px-[30px]">
-        <img className="h-55" src="/images/logo.svg" alt="Logo" />
+        <div className="cursor-pointer" onClick={() => router.push("/")}>
+          <img className="h-55" src="/images/logo.svg" alt="Logo" />
+        </div>
         <div>
           <MenuButton isOpen={isOpen} onClick={() => setIsOpen(!isOpen)} />
         </div>
