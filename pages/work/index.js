@@ -96,7 +96,7 @@ export default function LessSensitiveWheel() {
   const [showFooter, setShowFooter] = useState(false);
 
   useEffect(() => {
-    const t1 = setTimeout(() => setAnimationStep("filter"), 2000);
+    const t1 = setTimeout(() => setAnimationStep("filter"), 4000);
     const t2 = setTimeout(() => setAnimationStep("wheel"), 4000);
     return () => {
       clearTimeout(t1);
@@ -179,8 +179,8 @@ export default function LessSensitiveWheel() {
       transition: { delay: Math.floor(index / 2) * 0.1, type: "spring" },
     }),
     filter: (index) => {
-      if (index < 4) return { x: "-120vw", opacity: 0, transition: { duration: 1 } };
-      if (index > 5) return { x: "120vw", opacity: 0, transition: { duration: 1 } };
+      if (index < 4) return { x: "-120vw", opacity: 0, transition: { duration: 1000 } };
+      if (index > 5) return { x: "120vw", opacity: 0, transition: { duration: 1000 } };
       return { x: index === 4 ? -20 : 20, y: 0, scale: 1.3, rotate: index === 4 ? -5 : 5, opacity: 1, zIndex: 10, transition: { duration: 1, type: "spring" } };
     },
     wheel: (index) => {
