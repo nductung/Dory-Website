@@ -1,6 +1,7 @@
 import React, { useState, useEffect, useRef } from "react";
 import { motion, AnimatePresence } from "framer-motion"; // Import thêm AnimatePresence
 import Contact from "../../components/Contact";
+import Header from "../../components/Header";
 
 const cards = [
   {
@@ -214,7 +215,7 @@ export default function LessSensitiveWheel() {
               variants={cardVariants}
               initial="hidden"
               animate={animationStep}
-              className={`absolute w-56 h-64 flex flex-col items-center justify-center`}
+              className={`absolute w-64 h-64 flex flex-col items-center justify-center`}
               style={{ transformOrigin: "center 150%" }}
             >
               {/* Ảnh thẻ */}
@@ -227,9 +228,8 @@ export default function LessSensitiveWheel() {
           ))}
         </div>
       </div>
-
-      <div className="relative z-50">
-        <Contact />
+      <div className="absolute z-111 top-0 left-0 right-0">
+        <Header />
       </div>
     </div>
   );
