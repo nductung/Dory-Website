@@ -256,7 +256,7 @@ export default function LessSensitiveWheel() {
       transition: { duration: 1.5, ease: "easeOut" },
     },
     "intro-top": {
-      top: "12%", // Bay lên vị trí header (cách top 12%)
+      top: "-3%", // Bay lên vị trí header (cách top 12%)
       left: "50%",
       x: "-50%",
       y: "0%",
@@ -266,7 +266,7 @@ export default function LessSensitiveWheel() {
     },
     // Các trạng thái sau đó (scatter, wheel...) chữ vẫn giữ nguyên ở top
     scatter: {
-      top: "12%",
+      top: "-3%", // Bay lên vị trí header (cách top 12%)
       left: "50%",
       x: "-50%",
       y: "0%",
@@ -274,7 +274,7 @@ export default function LessSensitiveWheel() {
       opacity: 0.8,
     },
     filter: {
-      top: "5%",
+      top: "-50%",
       left: "50%",
       x: "-50%",
       y: "0%",
@@ -282,7 +282,7 @@ export default function LessSensitiveWheel() {
       opacity: 0.8,
     },
     wheel: {
-      top: "5%",
+      top: "-50%",
       left: "50%",
       x: "-50%",
       y: "0%",
@@ -321,26 +321,28 @@ export default function LessSensitiveWheel() {
       >
         {/* VIEW 1: WHEEL */}
         <div className="relative w-full h-screen overflow-hidden">
-          <div className="absolute inset-0 w-full h-full z-0">
-            <AnimatePresence mode="popLayout">
-              <motion.img
-                key={activeIndex}
-                src={cards[activeIndex * 2].bg}
-                initial={{ opacity: 0 }}
-                animate={{ opacity: 1 }}
-                exit={{ opacity: 0 }}
-                transition={{ duration: 0.8 }}
-                className="w-full h-full object-cover"
-                alt="background"
-              />
-              <div className="absolute inset-0 bg-black/40" />
-            </AnimatePresence>
-          </div>
+          {animationStep === "wheel" && (
+            <div className="absolute inset-0 w-full h-full z-0">
+              <AnimatePresence mode="popLayout">
+                <motion.img
+                  key={activeIndex}
+                  src={cards[activeIndex * 2].bg}
+                  initial={{ opacity: 0 }}
+                  animate={{ opacity: 1 }}
+                  exit={{ opacity: 0 }}
+                  transition={{ duration: 0.8 }}
+                  className="w-full h-full object-cover"
+                  alt="background"
+                />
+                <div className="absolute inset-0 bg-black/40" />
+              </AnimatePresence>
+            </div>
+          )}
 
           <div className="relative z-10 w-full h-full flex items-center justify-center">
             <div
               className={`relative w-10 h-10 flex items-center justify-center ${
-                animationStep === "wheel" ? "mt-[200px]" : ""
+                animationStep === "wheel" ? "mt-[120px]" : ""
               }`}
             >
               {cards.map((card, index) => (
