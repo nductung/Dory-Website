@@ -1,8 +1,9 @@
 import React, { useState, useEffect, useRef } from "react";
-import { motion, AnimatePresence } from "framer-motion"; // Import thêm AnimatePresence
+import { motion, AnimatePresence } from "framer-motion";
 import Contact from "../../components/Contact";
 import Header from "../../components/Header";
 
+// ... (Giữ nguyên phần khai báo mảng cards) ...
 const cards = [
   {
     id: 1,
@@ -81,11 +82,6 @@ const cards = [
 const TOTAL_PAIRS = 5;
 const RADIUS = 400;
 const ANIMATION_DURATION = 800;
-
-// --- CẤU HÌNH ĐỘ NHẠY ---
-// Số pixel cần cuộn để kích hoạt chuyển đổi.
-// Tăng số này lên = Cần cuộn nhiều hơn (Nặng hơn)
-// Giảm số này xuống = Nhạy hơn
 const SCROLL_THRESHOLD = 150;
 
 export default function LessSensitiveWheel() {
@@ -95,6 +91,9 @@ export default function LessSensitiveWheel() {
   const scrollAccumulator = useRef(0);
   const resetTimeout = useRef(null);
   const [isOpen, setIsOpen] = useState(false);
+
+  // --- NEW STATE: Kiểm soát việc hiển thị Footer ---
+  const [showFooter, setShowFooter] = useState(false);
 
   useEffect(() => {
     const t1 = setTimeout(() => setAnimationStep("filter"), 2000);
@@ -107,6 +106,7 @@ export default function LessSensitiveWheel() {
 
   useEffect(() => {
     const handleWheel = (e) => {
+      // Logic cũ: Chặn nếu chưa đến phase wheel hoặc đang bị lock
       if (animationStep !== "wheel" || isLocked.current) return;
 
       scrollAccumulator.current += e.deltaY;
@@ -116,51 +116,72 @@ export default function LessSensitiveWheel() {
       }, 200);
 
       if (Math.abs(scrollAccumulator.current) > SCROLL_THRESHOLD) {
-        isLocked.current = true;
+        // Xác định hướng: 1 là xuống (Next), -1 là lên (Prev)
         const direction = scrollAccumulator.current > 0 ? 1 : -1;
 
-        setActiveIndex((prev) => {
-          let next = prev + direction;
-          if (next >= TOTAL_PAIRS) next = 0;
-          if (next < 0) next = TOTAL_PAIRS - 1;
-          return next;
-        });
+        // --- LOGIC MỚI: XỬ LÝ FOOTER ---
+        if (showFooter) {
+          // Nếu Footer đang mở mà cuộn lên -> Đóng Footer, quay về Wheel
+          if (direction === -1) {
+            isLocked.current = true;
+            setShowFooter(false);
+            scrollAccumulator.current = 0;
+            setTimeout(() => { isLocked.current = false; }, ANIMATION_DURATION);
+          }
+          // Nếu cuộn xuống ở Footer -> Không làm gì (hoặc để scroll mặc định nếu footer dài)
+          return;
+        }
 
-        scrollAccumulator.current = 0;
-        setTimeout(() => {
-          isLocked.current = false;
-        }, ANIMATION_DURATION);
+        // Nếu Footer đang đóng (đang ở Wheel)
+        if (!showFooter) {
+          // Nếu đang ở cặp cuối cùng (Pair 5 - Index 4) VÀ cuộn xuống -> Mở Footer
+          // Lưu ý: activeIndex chạy từ 0 đến 4
+          if (activeIndex === TOTAL_PAIRS - 1 && direction === 1) {
+             isLocked.current = true;
+             setShowFooter(true);
+             scrollAccumulator.current = 0;
+             setTimeout(() => { isLocked.current = false; }, ANIMATION_DURATION);
+             return;
+          }
+
+          // Logic chuyển slide bình thường
+          isLocked.current = true;
+          setActiveIndex((prev) => {
+            let next = prev + direction;
+            
+            // Logic vòng lặp:
+            // Nếu > Max -> Về 0 (Loop vô tận khi cuộn xuống? Không, ta đã chặn ở trên để vào Footer)
+            // *Nhưng* nếu muốn loop từ 0 về 4 khi cuộn lên -> Giữ nguyên logic này
+            if (next >= TOTAL_PAIRS) next = 0; 
+            if (next < 0) next = TOTAL_PAIRS - 1;
+            return next;
+          });
+
+          scrollAccumulator.current = 0;
+          setTimeout(() => {
+            isLocked.current = false;
+          }, ANIMATION_DURATION);
+        }
       }
     };
 
     window.addEventListener("wheel", handleWheel, { passive: false });
     return () => window.removeEventListener("wheel", handleWheel);
-  }, [animationStep]);
+  }, [animationStep, activeIndex, showFooter]); // Thêm showFooter và activeIndex vào dependency
 
   const cardVariants = {
+    // ... (Giữ nguyên các variants cũ) ...
     hidden: { y: "120vh", x: 0, opacity: 0, rotate: 0 },
     scatter: (index) => ({
       x: (index - 5) * 60 + (Math.random() * 40 - 20),
       y: (index % 2 === 0 ? -1 : 1) * (Math.random() * 100 + 50),
-      opacity: 1,
-      scale: 1,
-      rotate: Math.random() * 40 - 20,
+      opacity: 1, scale: 1, rotate: Math.random() * 40 - 20,
       transition: { delay: Math.floor(index / 2) * 0.1, type: "spring" },
     }),
     filter: (index) => {
-      if (index < 4)
-        return { x: "-120vw", opacity: 0, transition: { duration: 1 } };
-      if (index > 5)
-        return { x: "120vw", opacity: 0, transition: { duration: 1 } };
-      return {
-        x: index === 4 ? -20 : 20,
-        y: 0,
-        scale: 1.3,
-        rotate: index === 4 ? -5 : 5,
-        opacity: 1,
-        zIndex: 10,
-        transition: { duration: 1, type: "spring" },
-      };
+      if (index < 4) return { x: "-120vw", opacity: 0, transition: { duration: 1 } };
+      if (index > 5) return { x: "120vw", opacity: 0, transition: { duration: 1 } };
+      return { x: index === 4 ? -20 : 20, y: 0, scale: 1.3, rotate: index === 4 ? -5 : 5, opacity: 1, zIndex: 10, transition: { duration: 1, type: "spring" } };
     },
     wheel: (index) => {
       const pairIndex = Math.floor(index / 2);
@@ -186,52 +207,74 @@ export default function LessSensitiveWheel() {
 
   return (
     <div className="bg-primary relative w-full h-screen overflow-hidden">
-      {/* --- PHẦN BACKGROUND XỬ LÝ RIÊNG (FIX LỖI) --- */}
-      <div className="absolute inset-0 w-full h-full z-0">
-        <AnimatePresence mode="popLayout">
-          <motion.img
-            // Key quan trọng: Khi key đổi, ảnh cũ fade out, ảnh mới fade in
-            key={activeIndex}
-            // Lấy ảnh của thẻ đầu tiên trong cặp (Index chẵn: 0, 2, 4...)
-            src={cards[activeIndex * 2].bg}
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            exit={{ opacity: 0 }}
-            transition={{ duration: 0.8 }}
-            className="w-full h-full object-cover"
-            alt="background"
-          />
-          {/* Lớp phủ đen mờ để thẻ nổi bật hơn trên nền ảnh */}
-          <div className="absolute inset-0 bg-black/40" />
-        </AnimatePresence>
-      </div>
+      
+      {/* Container trượt toàn màn hình */}
+      <motion.div 
+        className="w-full h-full"
+        animate={{ y: showFooter ? "-100vh" : "0vh" }}
+        transition={{ duration: 1, ease: [0.16, 1, 0.3, 1] }}
+      >
+        {/* VIEW 1: WHEEL */}
+        <div className="relative w-full h-screen overflow-hidden">
+            <div className="absolute inset-0 w-full h-full z-0">
+                <AnimatePresence mode="popLayout">
+                <motion.img
+                    key={activeIndex}
+                    src={cards[activeIndex * 2].bg}
+                    initial={{ opacity: 0 }}
+                    animate={{ opacity: 1 }}
+                    exit={{ opacity: 0 }}
+                    transition={{ duration: 0.8 }}
+                    className="w-full h-full object-cover"
+                    alt="background"
+                />
+                <div className="absolute inset-0 bg-black/40" />
+                </AnimatePresence>
+            </div>
 
-      {/* --- PHẦN NỘI DUNG CHÍNH (Wheel) --- */}
-      <div className="relative z-10 w-full h-full flex items-center justify-center">
-        <div className="relative w-10 h-10 flex items-center justify-center">
-          {cards.map((card, index) => (
-            <motion.div
-              key={card.id}
-              custom={index}
-              variants={cardVariants}
-              initial="hidden"
-              animate={animationStep}
-              className={`absolute w-64 h-64 flex flex-col items-center justify-center`}
-              style={{ transformOrigin: "center 150%" }}
-            >
-              {/* Ảnh thẻ */}
-              <img
-                src={card.img}
-                alt="img"
-                className="w-full h-full object-contain drop-shadow-2xl"
-              />
-            </motion.div>
-          ))}
+            <div className="relative z-10 w-full h-full flex items-center justify-center">
+                <div className="relative w-10 h-10 flex items-center justify-center">
+                {cards.map((card, index) => (
+                    <motion.div
+                    key={card.id}
+                    custom={index}
+                    variants={cardVariants}
+                    initial="hidden"
+                    animate={animationStep}
+                    className={`absolute w-64 h-64 flex flex-col items-center justify-center`}
+                    style={{ transformOrigin: "center 150%" }}
+                    >
+                    <img
+                        src={card.img}
+                        alt="img"
+                        className="w-full h-full object-contain drop-shadow-2xl"
+                    />
+                    </motion.div>
+                ))}
+                </div>
+            </div>
         </div>
-      </div>
-      <div className="absolute z-50 top-0 left-0 right-0">
+
+        {/* VIEW 2: FOOTER */}
+        <div className="relative w-full h-screen bg-black z-20 flex flex-col justify-center">
+             <Contact />
+        </div>
+      </motion.div>
+
+      {/* --- HEADER ANIMATION (Sửa đoạn này) --- */}
+      <motion.div 
+        className="absolute z-50 top-0 left-0 right-0"
+        
+        // Logic: Nếu showFooter = true -> Dịch lên -100% (Ẩn)
+        // Nếu showFooter = false -> Dịch về 0 (Hiện)
+        animate={{ y: showFooter ? "-100%" : "0%" }}
+        
+        // Transition: Mượt mà, thời gian 0.5s hoặc 0.8s tùy ý thích
+        transition={{ duration: 0.6, ease: "easeInOut" }}
+      >
         <Header isOpen={isOpen} setIsOpen={setIsOpen} indexHeader={2} />
-      </div>
+      </motion.div>
+
     </div>
   );
 }
