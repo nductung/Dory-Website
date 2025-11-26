@@ -69,7 +69,7 @@ const MenuButton = ({ onClick, isOpen }) => {
 
 const Header = ({ isOpen, setIsOpen, indexHeader }) => {
   const menuItems = [
-    { title: "Home", href: "" },
+    { title: "Home", href: "/" },
     { title: "About me", href: "/about" },
     { title: "Work", href: "/work" },
   ];

@@ -11,6 +11,7 @@ const cards = [
     label: "Pair 1",
     img: "/images/work/heniken/[Copy] Mo work.png",
     bg: "/images/work/heniken/henback 1.png",
+    href: "/work/heineken",
   },
   {
     id: 2,
@@ -18,6 +19,7 @@ const cards = [
     label: "Pair 1",
     img: "/images/work/heniken/[Copy] Mo work 2.png",
     bg: "/images/work/heniken/henback 1.png",
+    href: "/work/heineken",
   },
   {
     id: 3,
@@ -25,6 +27,7 @@ const cards = [
     label: "Pair 5",
     img: "/images/work/meoi/bibong2 2.png",
     bg: "/images/work/meoi/henback 1.png",
+     href: "/work/meoi" 
   },
   {
     id: 4,
@@ -32,6 +35,7 @@ const cards = [
     label: "Pair 5",
     img: "/images/work/meoi/[Copy] Mo work.png",
     bg: "/images/work/meoi/henback 1.png",
+     href: "/work/meoi" 
   },
   {
     id: 5,
@@ -39,6 +43,7 @@ const cards = [
     label: "WINNER",
     img: "/images/work/mo/bibong2 2.png",
     bg: "/images/work/mo/henback 1.png",
+    href: "/work/mo"
   },
   {
     id: 6,
@@ -46,6 +51,7 @@ const cards = [
     label: "WINNER",
     img: "/images/work/mo/[Copy] Mo work.png",
     bg: "/images/work/mo/henback 1.png",
+    href: "/work/mo"
   },
 
   {
@@ -54,6 +60,7 @@ const cards = [
     label: "Pair 2",
     img: "/images/work/bibong/bibong2 1.png",
     bg: "/images/work/bibong/henback 1.png",
+    href: "/work/bibong",
   },
   {
     id: 8,
@@ -61,6 +68,7 @@ const cards = [
     label: "Pair 2",
     img: "/images/work/bibong/[Copy] Mo work.png",
     bg: "/images/work/bibong/henback 1.png",
+    href: "/work/bibong",
   },
 
   {
@@ -69,6 +77,7 @@ const cards = [
     label: "Pair 4",
     img: "/images/work/folio/bibong2 2.png",
     bg: "/images/work/folio/henback 1.png",
+    href: "/work/folio",
   },
   {
     id: 10,
@@ -76,6 +85,7 @@ const cards = [
     label: "Pair 4",
     img: "/images/work/folio/[Copy] Mo work.png",
     bg: "/images/work/folio/henback 1.png",
+    href: "/work/folio",
   },
 ];
 
@@ -284,16 +294,18 @@ export default function LessSensitiveWheel() {
   return (
     <div className="bg-primary relative w-full h-screen overflow-hidden">
       <motion.div
-        className="fixed z-40 text-center w-full pointer-events-none"
+        // 1. Đổi 'w-full' và 'text-center' thành 'w-max' để khung bao vừa khít nội dung
+        className="fixed z-40 w-max pointer-events-none"
         variants={textVariants}
         initial="intro-start"
         animate={animationStep} // Text di chuyển theo các bước animation
       >
-        <div className="flex flex-col gap-[20px]">
-          <h1 className="font-[700] text-[100px] leading-[86px] text-[#F1E306]">
+        {/* 2. Thêm 'text-left' và 'items-start' để căn trái text */}
+        <div className="flex flex-col gap-[20px] text-left items-start">
+          <h1 className="font-[700] text-[100px] leading-[86px] text-[#F1E306] whitespace-nowrap uppercase">
             Designs shaped by
           </h1>
-          <span className="font-[700] text-[100px] leading-[86px] text-[#F1E306]">
+          <span className="font-[700] text-[100px] leading-[86px] text-[#F1E306] whitespace-nowrap uppercase">
             Curiosity and Intention
           </span>
         </div>
@@ -324,7 +336,7 @@ export default function LessSensitiveWheel() {
           </div>
 
           <div className="relative z-10 w-full h-full flex items-center justify-center">
-            <div className="relative w-10 h-10 flex items-center justify-center mt-[200px]">
+            <div className={`relative w-10 h-10 flex items-center justify-center ${animationStep === "wheel" ? "mt-[200px]" : ""}`}>
               {cards.map((card, index) => (
                 <motion.div
                   key={card.id}
@@ -338,11 +350,12 @@ export default function LessSensitiveWheel() {
                       ? "hidden"
                       : animationStep
                   }
-                  className={`absolute w-60 h-60 flex flex-col items-center justify-center`}
+                  className={`absolute w-60 h-60 flex flex-col items-center justify-center cursor-pointer`}
                   style={{
                     transformOrigin:
                       animationStep === "wheel" ? "50% 120%" : "50% 50%",
                   }}
+                  onClick={() => window.open(card.href, "_blank")}
                 >
                   <img
                     src={card.img}
