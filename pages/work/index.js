@@ -85,7 +85,7 @@ const ANIMATION_DURATION = 800;
 const SCROLL_THRESHOLD = 150;
 
 export default function LessSensitiveWheel() {
-  const [animationStep, setAnimationStep] = useState("scatter");
+  const [animationStep, setAnimationStep] = useState("intro-start");
   const [activeIndex, setActiveIndex] = useState(2);
   const isLocked = useRef(false);
   const scrollAccumulator = useRef(0);
@@ -96,11 +96,17 @@ export default function LessSensitiveWheel() {
   const [showFooter, setShowFooter] = useState(false);
 
   useEffect(() => {
-    const t1 = setTimeout(() => setAnimationStep("filter"), 4000);
-    const t2 = setTimeout(() => setAnimationStep("wheel"), 4000);
+    const t0 = setTimeout(() => setAnimationStep("intro-center"), 100);
+    const t1 = setTimeout(() => setAnimationStep("intro-top"), 2500);
+    const t2 = setTimeout(() => setAnimationStep("scatter"), 3500);
+    const t3 = setTimeout(() => setAnimationStep("filter"), 6000);
+    const t4 = setTimeout(() => setAnimationStep("wheel"), 6000);
     return () => {
+      clearTimeout(t0);
       clearTimeout(t1);
       clearTimeout(t2);
+      clearTimeout(t3);
+      clearTimeout(t4);
     };
   }, []);
 
@@ -126,7 +132,9 @@ export default function LessSensitiveWheel() {
             isLocked.current = true;
             setShowFooter(false);
             scrollAccumulator.current = 0;
-            setTimeout(() => { isLocked.current = false; }, ANIMATION_DURATION);
+            setTimeout(() => {
+              isLocked.current = false;
+            }, ANIMATION_DURATION);
           }
           // Nếu cuộn xuống ở Footer -> Không làm gì (hoặc để scroll mặc định nếu footer dài)
           return;
@@ -137,22 +145,24 @@ export default function LessSensitiveWheel() {
           // Nếu đang ở cặp cuối cùng (Pair 5 - Index 4) VÀ cuộn xuống -> Mở Footer
           // Lưu ý: activeIndex chạy từ 0 đến 4
           if (activeIndex === TOTAL_PAIRS - 1 && direction === 1) {
-             isLocked.current = true;
-             setShowFooter(true);
-             scrollAccumulator.current = 0;
-             setTimeout(() => { isLocked.current = false; }, ANIMATION_DURATION);
-             return;
+            isLocked.current = true;
+            setShowFooter(true);
+            scrollAccumulator.current = 0;
+            setTimeout(() => {
+              isLocked.current = false;
+            }, ANIMATION_DURATION);
+            return;
           }
 
           // Logic chuyển slide bình thường
           isLocked.current = true;
           setActiveIndex((prev) => {
             let next = prev + direction;
-            
+
             // Logic vòng lặp:
             // Nếu > Max -> Về 0 (Loop vô tận khi cuộn xuống? Không, ta đã chặn ở trên để vào Footer)
             // *Nhưng* nếu muốn loop từ 0 về 4 khi cuộn lên -> Giữ nguyên logic này
-            if (next >= TOTAL_PAIRS) next = 0; 
+            if (next >= TOTAL_PAIRS) next = 0;
             if (next < 0) next = TOTAL_PAIRS - 1;
             return next;
           });
@@ -175,13 +185,25 @@ export default function LessSensitiveWheel() {
     scatter: (index) => ({
       x: (index - 5) * 60 + (Math.random() * 40 - 20),
       y: (index % 2 === 0 ? -1 : 1) * (Math.random() * 100 + 50),
-      opacity: 1, scale: 1, rotate: Math.random() * 40 - 20,
+      opacity: 1,
+      scale: 1,
+      rotate: Math.random() * 40 - 20,
       transition: { delay: Math.floor(index / 2) * 0.1, type: "spring" },
     }),
     filter: (index) => {
-      if (index < 4) return { x: "-120vw", opacity: 0, transition: { duration: 1000 } };
-      if (index > 5) return { x: "120vw", opacity: 0, transition: { duration: 1000 } };
-      return { x: index === 4 ? -20 : 20, y: 0, scale: 1.3, rotate: index === 4 ? -5 : 5, opacity: 1, zIndex: 10, transition: { duration: 1, type: "spring" } };
+      if (index < 4)
+        return { x: "-120vw", opacity: 0, transition: { duration: 1000 } };
+      if (index > 5)
+        return { x: "120vw", opacity: 0, transition: { duration: 1000 } };
+      return {
+        x: index === 4 ? -20 : 20,
+        y: 0,
+        scale: 1.3,
+        rotate: index === 4 ? -5 : 5,
+        opacity: 1,
+        zIndex: 10,
+        transition: { duration: 1, type: "spring" },
+      };
     },
     wheel: (index) => {
       const pairIndex = Math.floor(index / 2);
@@ -204,77 +226,152 @@ export default function LessSensitiveWheel() {
       };
     },
   };
+  // --- TEXT INTRO VARIANTS ---
+  const textVariants = {
+    "intro-start": {
+      top: "100%", // Bắt đầu ở dưới đáy màn hình
+      left: "50%",
+      x: "-50%",
+      y: "100%",
+      scale: 1,
+      opacity: 0,
+    },
+    "intro-center": {
+      top: "50%", // Bay lên giữa
+      left: "50%",
+      x: "-50%",
+      y: "-50%",
+      scale: 1,
+      opacity: 1,
+      transition: { duration: 1.5, ease: "easeOut" },
+    },
+    "intro-top": {
+      top: "12%", // Bay lên vị trí header (cách top 12%)
+      left: "50%",
+      x: "-50%",
+      y: "0%",
+      scale: 1, // Thu nhỏ lại
+      opacity: 1,
+      transition: { duration: 1.5, ease: "easeInOut" },
+    },
+    // Các trạng thái sau đó (scatter, wheel...) chữ vẫn giữ nguyên ở top
+    scatter: {
+      top: "12%",
+      left: "50%",
+      x: "-50%",
+      y: "0%",
+      scale: 0.5,
+      opacity: 0.8,
+    },
+    filter: {
+      top: "5%",
+      left: "50%",
+      x: "-50%",
+      y: "0%",
+      scale: 0.5,
+      opacity: 0.8,
+    },
+    wheel: {
+      top: "5%",
+      left: "50%",
+      x: "-50%",
+      y: "0%",
+      scale: 0.5,
+      opacity: 0.8,
+    },
+  };
 
   return (
     <div className="bg-primary relative w-full h-screen overflow-hidden">
-      
-      {/* Container trượt toàn màn hình */}
-      <motion.div 
+      <motion.div
+        className="fixed z-40 text-center w-full pointer-events-none"
+        variants={textVariants}
+        initial="intro-start"
+        animate={animationStep} // Text di chuyển theo các bước animation
+      >
+        <div className="flex flex-col gap-[20px]">
+          <h1 className="font-[700] text-[100px] leading-[86px] text-[#F1E306]">
+            Designs shaped by
+          </h1>
+          <span className="font-[700] text-[100px] leading-[86px] text-[#F1E306]">
+            Curiosity and Intention
+          </span>
+        </div>
+      </motion.div>
+
+      {/* CONTAINER CHÍNH */}
+      <motion.div
         className="w-full h-full"
         animate={{ y: showFooter ? "-100vh" : "0vh" }}
         transition={{ duration: 1, ease: [0.16, 1, 0.3, 1] }}
       >
         {/* VIEW 1: WHEEL */}
         <div className="relative w-full h-screen overflow-hidden">
-            <div className="absolute inset-0 w-full h-full z-0">
-                <AnimatePresence mode="popLayout">
-                <motion.img
-                    key={activeIndex}
-                    src={cards[activeIndex * 2].bg}
-                    initial={{ opacity: 0 }}
-                    animate={{ opacity: 1 }}
-                    exit={{ opacity: 0 }}
-                    transition={{ duration: 0.8 }}
-                    className="w-full h-full object-cover"
-                    alt="background"
-                />
-                <div className="absolute inset-0 bg-black/40" />
-                </AnimatePresence>
-            </div>
+          <div className="absolute inset-0 w-full h-full z-0">
+            <AnimatePresence mode="popLayout">
+              <motion.img
+                key={activeIndex}
+                src={cards[activeIndex * 2].bg}
+                initial={{ opacity: 0 }}
+                animate={{ opacity: 1 }}
+                exit={{ opacity: 0 }}
+                transition={{ duration: 0.8 }}
+                className="w-full h-full object-cover"
+                alt="background"
+              />
+              <div className="absolute inset-0 bg-black/40" />
+            </AnimatePresence>
+          </div>
 
-            <div className="relative z-10 w-full h-full flex items-center justify-center">
-                <div className="relative w-10 h-10 flex items-center justify-center">
-                {cards.map((card, index) => (
-                    <motion.div
-                    key={card.id}
-                    custom={index}
-                    variants={cardVariants}
-                    initial="hidden"
-                    animate={animationStep}
-                    className={`absolute w-64 h-64 flex flex-col items-center justify-center`}
-                    style={{ transformOrigin: "center 150%" }}
-                    >
-                    <img
-                        src={card.img}
-                        alt="img"
-                        className="w-full h-full object-contain drop-shadow-2xl"
-                    />
-                    </motion.div>
-                ))}
-                </div>
+          <div className="relative z-10 w-full h-full flex items-center justify-center">
+            <div className="relative w-10 h-10 flex items-center justify-center mt-[200px]">
+              {cards.map((card, index) => (
+                <motion.div
+                  key={card.id}
+                  custom={index}
+                  variants={cardVariants}
+                  initial="hidden"
+                  animate={
+                    ["intro-start", "intro-center", "intro-top"].includes(
+                      animationStep
+                    )
+                      ? "hidden"
+                      : animationStep
+                  }
+                  className={`absolute w-60 h-60 flex flex-col items-center justify-center`}
+                  style={{
+                    transformOrigin:
+                      animationStep === "wheel" ? "50% 120%" : "50% 50%",
+                  }}
+                >
+                  <img
+                    src={card.img}
+                    alt="img"
+                    className="w-full h-full object-contain drop-shadow-2xl"
+                  />
+                </motion.div>
+              ))}
             </div>
+          </div>
         </div>
 
         {/* VIEW 2: FOOTER */}
         <div className="relative w-full h-screen bg-black z-20 flex flex-col justify-center">
-             <Contact />
+          <Contact />
         </div>
       </motion.div>
 
       {/* --- HEADER ANIMATION (Sửa đoạn này) --- */}
-      <motion.div 
+      <motion.div
         className="absolute z-50 top-0 left-0 right-0"
-        
         // Logic: Nếu showFooter = true -> Dịch lên -100% (Ẩn)
         // Nếu showFooter = false -> Dịch về 0 (Hiện)
         animate={{ y: showFooter ? "-100%" : "0%" }}
-        
         // Transition: Mượt mà, thời gian 0.5s hoặc 0.8s tùy ý thích
         transition={{ duration: 0.6, ease: "easeInOut" }}
       >
         <Header isOpen={isOpen} setIsOpen={setIsOpen} indexHeader={2} />
       </motion.div>
-
     </div>
   );
 }
