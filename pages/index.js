@@ -118,7 +118,7 @@ export default function Home() {
 
   return (
     <div className="max-w-[1440px] w-full bg-primary">
-      <Header isOpen={isOpen} setIsOpen={setIsOpen} />
+      <Header isOpen={isOpen} setIsOpen={setIsOpen} indexHeader={0} />
 
       {/* Introduction */}
       <div className="px-[98px] py-[100px] flex flex-col mob:px-[25px]">

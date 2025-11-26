@@ -67,7 +67,7 @@ const MenuButton = ({ onClick, isOpen }) => {
   );
 };
 
-const Header = ({ isOpen, setIsOpen }) => {
+const Header = ({ isOpen, setIsOpen, indexHeader }) => {
   const menuItems = [
     { title: "Home", href: "" },
     { title: "About me", href: "/about" },
@@ -117,7 +117,7 @@ const Header = ({ isOpen, setIsOpen }) => {
                     <motion.a
                       href={item.href}
                       onClick={(e) => {
-                        if (i === 0) {
+                        if (i === indexHeader) {
                           e.preventDefault();
                           setIsOpen(false);
                         }

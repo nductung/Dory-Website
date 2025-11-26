@@ -94,6 +94,7 @@ export default function LessSensitiveWheel() {
   const isLocked = useRef(false);
   const scrollAccumulator = useRef(0);
   const resetTimeout = useRef(null);
+  const [isOpen, setIsOpen] = useState(false);
 
   useEffect(() => {
     const t1 = setTimeout(() => setAnimationStep("filter"), 2000);
@@ -228,8 +229,8 @@ export default function LessSensitiveWheel() {
           ))}
         </div>
       </div>
-      <div className="absolute z-111 top-0 left-0 right-0">
-        <Header />
+      <div className="absolute z-50 top-0 left-0 right-0">
+        <Header isOpen={isOpen} setIsOpen={setIsOpen} indexHeader={2} />
       </div>
     </div>
   );
