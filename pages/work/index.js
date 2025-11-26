@@ -295,7 +295,7 @@ export default function LessSensitiveWheel() {
     <div className="bg-primary relative w-full h-screen overflow-hidden">
       <motion.div
         // 1. Đổi 'w-full' và 'text-center' thành 'w-max' để khung bao vừa khít nội dung
-        className="fixed z-40 w-max pointer-events-none"
+        className={`fixed z-40 w-max pointer-events-none ${showFooter ? "hidden" : ""}`}
         variants={textVariants}
         initial="intro-start"
         animate={animationStep} // Text di chuyển theo các bước animation
