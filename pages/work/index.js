@@ -229,8 +229,8 @@ export default function LessSensitiveWheel() {
         x: RADIUS * Math.sin(rad),
         y: isActive ? 0 : RADIUS * (1 - Math.cos(rad)) + 100,
         opacity: isActive ? 1 : 0,
-        scale: isActive ? 1.4 : 0.6,
-        rotate: angle + (index % 2 === 0 ? -5 : 5),
+        scale: isActive ? (index % 2 == 0 ? 1.7 : 1.4) : 0.6,
+        rotate: 0,
         zIndex: isActive ? 100 : 0,
         transition: { duration: ANIMATION_DURATION / 1000, ease: "easeInOut" },
       };
@@ -361,7 +361,11 @@ export default function LessSensitiveWheel() {
                   className={`absolute w-60 h-60 flex flex-col items-center justify-center cursor-pointer`}
                   style={{
                     transformOrigin:
-                      animationStep === "wheel" ? "50% 120%" : "50% 50%",
+                      animationStep === "wheel"
+                        ? index % 2 === 0
+                          ? "80% 100%"
+                          : "-40% 120%"
+                        : "50% 50%",
                   }}
                   onClick={() => window.open(card.href, "_blank")}
                 >
