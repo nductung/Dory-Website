@@ -1,7 +1,6 @@
 import { useState } from "react";
 import { useRouter } from "next/router";
 import { useTheme } from "next-themes";
-// Data
 import Contact from "../components/Contact";
 
 const About = () => {
@@ -15,19 +14,32 @@ const About = () => {
         <p className="font-[700] text-[525px] leading-[451px] text-[#F1E306] text-center mob:text-[40vw]">
           DORY
         </p>
-        {/* --- CONTAINER CHO ẢNH VÀ TEXT --- */}
-        {/* Dùng container absolute chung để dễ căn chỉnh vị trí tương đối với nhau */}
+
         <div className="absolute top-[236px] w-full h-[600px] pointer-events-none">
-          {/* CENTRAL IMAGE */}
-          <img
-            src="/images/Layer_1.png"
-            alt="Dory Portrait"
-            className="absolute left-1/2 -translate-x-1/2 w-[300px]  h-auto z-10 object-cover"
-          />
+          {/* --- CENTRAL IMAGE (ĐÃ SỬA HIỆU ỨNG LẬT) --- */}
+          {/* 1. Container chính: giữ vị trí và tạo chiều sâu 3D (perspective) */}
+          <div className="group absolute left-1/2 -translate-x-1/2 w-[300px] z-10 [perspective:1000px] pointer-events-auto">
+            {/* 2. Inner Wrapper: Phần thực hiện xoay */}
+            <div className="relative w-full h-full transition-all duration-700 [transform-style:preserve-3d] group-hover:[transform:rotateY(180deg)]">
+              {/* MẶT TRƯỚC (Ảnh gốc) */}
+              <img
+                src="/images/Layer_1.png"
+                alt="Dory Front"
+                className="w-full h-auto object-cover [backface-visibility:hidden]"
+              />
 
-          {/* --- FLOATING WORDS (CSS từng chữ theo design) --- */}
+              {/* MẶT SAU (Ảnh khi lật) */}
+              {/* Bạn nhớ thay đường dẫn ảnh thứ 2 vào src bên dưới */}
+              <img
+                src="/images/Gemini_Generated_Image_dkmpshdkmpshdkmp 1.png"
+                alt="Dory Back"
+                className="absolute top-0 left-0 w-full h-full object-cover [backface-visibility:hidden] [transform:rotateY(180deg)]"
+              />
+            </div>
+          </div>
+          {/* ------------------------------------------- */}
 
-          {/* 1. "the" - Bên trái ảnh, ngang tầm vai */}
+          {/* FLOATING WORDS */}
           <p className="font-[700] text-[70px] leading-[60px] text-[#7BC14B] absolute top-[25%] left-[29%] z-20">
             the
           </p>
@@ -45,6 +57,7 @@ const About = () => {
           </p>
         </div>
       </div>
+
       <div className="mt-[236px] flex w-full justify-between px-[82px] mob:px-[30px]">
         <p className="LexendLight font-[300] text-[28px] leading-[35px] text-[#6956B2] max-w-[33vw] text-left">
           {`Through every project, I aim to turn creativity into something that sparks joy and connection`}

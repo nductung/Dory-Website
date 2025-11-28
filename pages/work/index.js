@@ -256,7 +256,7 @@ export default function LessSensitiveWheel() {
       transition: { duration: 1.5, ease: "easeOut" },
     },
     "intro-top": {
-      top: "-3%", // Bay lên vị trí header (cách top 12%)
+      top: "0%", // Bay lên vị trí header (cách top 12%)
       left: "50%",
       x: "-50%",
       y: "0%",
@@ -266,7 +266,7 @@ export default function LessSensitiveWheel() {
     },
     // Các trạng thái sau đó (scatter, wheel...) chữ vẫn giữ nguyên ở top
     scatter: {
-      top: "-3%", // Bay lên vị trí header (cách top 12%)
+      top: "0%", // Bay lên vị trí header (cách top 12%)
       left: "50%",
       x: "-50%",
       y: "0%",

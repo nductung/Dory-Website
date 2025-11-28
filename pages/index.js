@@ -117,7 +117,7 @@ export default function Home() {
   ];
 
   return (
-    <div className="max-w-[1440px] w-full bg-primary">
+    <div className="w-full bg-primary">
       <Header isOpen={isOpen} setIsOpen={setIsOpen} indexHeader={0} />
 
       {/* Introduction */}
