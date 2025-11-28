@@ -2,8 +2,10 @@ import React, { useState, useEffect, useRef } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import Contact from "../../components/Contact";
 import Header from "../../components/Header";
+import Head from "next/head";
+import Image from "next/image";
 
-// ... (Giữ nguyên phần khai báo mảng cards) ...
+// Card data configuration
 const cards = [
   {
     id: 1,
@@ -102,9 +104,10 @@ export default function LessSensitiveWheel() {
   const resetTimeout = useRef(null);
   const [isOpen, setIsOpen] = useState(false);
 
-  // --- NEW STATE: Kiểm soát việc hiển thị Footer ---
+  // State to control Footer visibility
   const [showFooter, setShowFooter] = useState(false);
 
+  // Initial animation sequence
   useEffect(() => {
     const t0 = setTimeout(() => setAnimationStep("intro-center"), 100);
     const t1 = setTimeout(() => setAnimationStep("intro-top"), 2500);
@@ -120,9 +123,10 @@ export default function LessSensitiveWheel() {
     };
   }, []);
 
+  // Wheel event handler for custom scrolling logic
   useEffect(() => {
     const handleWheel = (e) => {
-      // Logic cũ: Chặn nếu chưa đến phase wheel hoặc đang bị lock
+      // Block if not in 'wheel' phase or if locked
       if (animationStep !== "wheel" || isLocked.current) return;
 
       scrollAccumulator.current += e.deltaY;
@@ -132,12 +136,12 @@ export default function LessSensitiveWheel() {
       }, 200);
 
       if (Math.abs(scrollAccumulator.current) > SCROLL_THRESHOLD) {
-        // Xác định hướng: 1 là xuống (Next), -1 là lên (Prev)
+        // Direction: 1 is down (Next), -1 is up (Prev)
         const direction = scrollAccumulator.current > 0 ? 1 : -1;
 
-        // --- LOGIC MỚI: XỬ LÝ FOOTER ---
+        // Logic: Footer Handling
         if (showFooter) {
-          // Nếu Footer đang mở mà cuộn lên -> Đóng Footer, quay về Wheel
+          // If Footer is open and scrolling up -> Close Footer, return to Wheel
           if (direction === -1) {
             isLocked.current = true;
             setShowFooter(false);
@@ -146,14 +150,13 @@ export default function LessSensitiveWheel() {
               isLocked.current = false;
             }, ANIMATION_DURATION);
           }
-          // Nếu cuộn xuống ở Footer -> Không làm gì (hoặc để scroll mặc định nếu footer dài)
+          // If scrolling down in Footer -> Do nothing (default scroll)
           return;
         }
 
-        // Nếu Footer đang đóng (đang ở Wheel)
+        // If Footer is closed (currently in Wheel view)
         if (!showFooter) {
-          // Nếu đang ở cặp cuối cùng (Pair 5 - Index 4) VÀ cuộn xuống -> Mở Footer
-          // Lưu ý: activeIndex chạy từ 0 đến 4
+          // If at the last pair (Pair 5 - Index 4) AND scrolling down -> Open Footer
           if (activeIndex === TOTAL_PAIRS - 1 && direction === 1) {
             isLocked.current = true;
             setShowFooter(true);
@@ -164,14 +167,12 @@ export default function LessSensitiveWheel() {
             return;
           }
 
-          // Logic chuyển slide bình thường
+          // Normal slide transition logic
           isLocked.current = true;
           setActiveIndex((prev) => {
             let next = prev + direction;
 
-            // Logic vòng lặp:
-            // Nếu > Max -> Về 0 (Loop vô tận khi cuộn xuống? Không, ta đã chặn ở trên để vào Footer)
-            // *Nhưng* nếu muốn loop từ 0 về 4 khi cuộn lên -> Giữ nguyên logic này
+            // Loop logic:
             if (next >= TOTAL_PAIRS) next = 0;
             if (next < 0) next = TOTAL_PAIRS - 1;
             return next;
@@ -187,10 +188,16 @@ export default function LessSensitiveWheel() {
 
     window.addEventListener("wheel", handleWheel, { passive: false });
     return () => window.removeEventListener("wheel", handleWheel);
-  }, [animationStep, activeIndex, showFooter]); // Thêm showFooter và activeIndex vào dependency
+  }, [animationStep, activeIndex, showFooter]);
 
+  /**
+   * Card Variants for Animation Stages
+   * - hidden: Initial off-screen state.
+   * - scatter: Random scattering effect.
+   * - filter: Filters cards to prepare for wheel.
+   * - wheel: The main circular carousel layout.
+   */
   const cardVariants = {
-    // ... (Giữ nguyên các variants cũ) ...
     hidden: { y: "120vh", x: 0, opacity: 0, rotate: 0 },
     scatter: (index) => ({
       x: (index - 5) * 60 + (Math.random() * 40 - 20),
@@ -236,10 +243,14 @@ export default function LessSensitiveWheel() {
       };
     },
   };
-  // --- TEXT INTRO VARIANTS ---
+
+  /**
+   * Text Intro Variants
+   * Controls the animation of the introduction text.
+   */
   const textVariants = {
     "intro-start": {
-      top: "100%", // Bắt đầu ở dưới đáy màn hình
+      top: "100%", // Start at bottom
       left: "50%",
       x: "-50%",
       y: "100%",
@@ -247,7 +258,7 @@ export default function LessSensitiveWheel() {
       opacity: 0,
     },
     "intro-center": {
-      top: "50%", // Bay lên giữa
+      top: "50%", // Fly to center
       left: "50%",
       x: "-50%",
       y: "-50%",
@@ -256,17 +267,17 @@ export default function LessSensitiveWheel() {
       transition: { duration: 1.5, ease: "easeOut" },
     },
     "intro-top": {
-      top: "0%", // Bay lên vị trí header (cách top 12%)
+      top: "0%", // Fly to header position
       left: "50%",
       x: "-50%",
       y: "0%",
-      scale: 1, // Thu nhỏ lại
+      scale: 1,
       opacity: 1,
       transition: { duration: 1.5, ease: "easeInOut" },
     },
-    // Các trạng thái sau đó (scatter, wheel...) chữ vẫn giữ nguyên ở top
+    // Subsequent states (scatter, wheel...) keep text at top but scaled down
     scatter: {
-      top: "0%", // Bay lên vị trí header (cách top 12%)
+      top: "0%",
       left: "50%",
       x: "-50%",
       y: "0%",
@@ -293,16 +304,20 @@ export default function LessSensitiveWheel() {
 
   return (
     <div className="bg-primary relative w-full h-screen overflow-hidden">
+      <Head>
+        <title>Dory Portfolio - Work</title>
+        <meta
+          name="description"
+          content="Explore Dory's design projects and creative works."
+        />
+      </Head>
       <motion.div
-        // 1. Đổi 'w-full' và 'text-center' thành 'w-max' để khung bao vừa khít nội dung
-        className={`fixed z-40 w-max pointer-events-none ${
-          showFooter ? "hidden" : ""
-        }`}
+        className={`fixed z-40 w-max pointer-events-none ${showFooter ? "hidden" : ""
+          }`}
         variants={textVariants}
         initial="intro-start"
-        animate={animationStep} // Text di chuyển theo các bước animation
+        animate={animationStep}
       >
-        {/* 2. Thêm 'text-left' và 'items-start' để căn trái text */}
         <div className="flex flex-col gap-[20px] text-left items-start">
           <h1 className="font-[700] text-[100px] leading-[86px] text-[#F1E306] whitespace-nowrap uppercase">
             Designs shaped by
@@ -313,7 +328,7 @@ export default function LessSensitiveWheel() {
         </div>
       </motion.div>
 
-      {/* CONTAINER CHÍNH */}
+      {/* Main Container */}
       <motion.div
         className="w-full h-full"
         animate={{ y: showFooter ? "-100vh" : "0vh" }}
@@ -324,16 +339,21 @@ export default function LessSensitiveWheel() {
           {animationStep === "wheel" && (
             <div className="absolute inset-0 w-full h-full z-0">
               <AnimatePresence mode="popLayout">
-                <motion.img
+                <motion.div
                   key={activeIndex}
-                  src={cards[activeIndex * 2].bg}
                   initial={{ opacity: 0 }}
                   animate={{ opacity: 1 }}
                   exit={{ opacity: 0 }}
                   transition={{ duration: 0.8 }}
-                  className="w-full h-full object-cover"
-                  alt="background"
-                />
+                  className="absolute inset-0 w-full h-full"
+                >
+                  <Image
+                    src={cards[activeIndex * 2].bg}
+                    alt="background"
+                    layout="fill"
+                    objectFit="cover"
+                  />
+                </motion.div>
                 <div className="absolute inset-0 bg-black/40" />
               </AnimatePresence>
             </div>
@@ -341,9 +361,8 @@ export default function LessSensitiveWheel() {
 
           <div className="relative z-10 w-full h-full flex items-center justify-center">
             <div
-              className={`relative w-10 h-10 flex items-center justify-center ${
-                animationStep === "wheel" ? "mt-[120px]" : ""
-              }`}
+              className={`relative w-10 h-10 flex items-center justify-center ${animationStep === "wheel" ? "mt-[120px]" : ""
+                }`}
             >
               {cards.map((card, index) => (
                 <motion.div
@@ -369,11 +388,14 @@ export default function LessSensitiveWheel() {
                   }}
                   onClick={() => window.open(card.href, "_blank")}
                 >
-                  <img
-                    src={card.img}
-                    alt="img"
-                    className="w-full h-full object-contain drop-shadow-2xl"
-                  />
+                  <div className="relative w-full h-full drop-shadow-2xl">
+                    <Image
+                      src={card.img}
+                      alt="img"
+                      layout="fill"
+                      objectFit="contain"
+                    />
+                  </div>
                 </motion.div>
               ))}
             </div>
@@ -386,13 +408,12 @@ export default function LessSensitiveWheel() {
         </div>
       </motion.div>
 
-      {/* --- HEADER ANIMATION (Sửa đoạn này) --- */}
+      {/* Header Animation */}
       <motion.div
         className="absolute z-50 top-0 left-0 right-0"
-        // Logic: Nếu showFooter = true -> Dịch lên -100% (Ẩn)
-        // Nếu showFooter = false -> Dịch về 0 (Hiện)
+        // Logic: If showFooter = true -> Translate up -100% (Hide)
+        // If showFooter = false -> Translate to 0 (Show)
         animate={{ y: showFooter ? "-100%" : "0%" }}
-        // Transition: Mượt mà, thời gian 0.5s hoặc 0.8s tùy ý thích
         transition={{ duration: 0.6, ease: "easeInOut" }}
       >
         <Header isOpen={isOpen} setIsOpen={setIsOpen} indexHeader={2} />

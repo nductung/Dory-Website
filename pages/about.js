@@ -2,6 +2,8 @@ import { useState } from "react";
 import { useRouter } from "next/router";
 import { useTheme } from "next-themes";
 import Contact from "../components/Contact";
+import Head from "next/head";
+import Image from "next/image";
 
 const About = () => {
   const router = useRouter();
@@ -10,36 +12,53 @@ const About = () => {
 
   return (
     <div className="bg-primary">
+      <Head>
+        <title>Dory Portfolio - About</title>
+        <meta
+          name="description"
+          content="Learn more about Dory, a Graphic Designer based in Vietnam."
+        />
+      </Head>
       <div className="relative">
         <p className="font-[700] text-[525px] leading-[451px] text-[#F1E306] text-center mob:text-[40vw]">
           DORY
         </p>
 
         <div className="absolute top-[236px] w-full h-[600px] pointer-events-none">
-          {/* --- CENTRAL IMAGE (ĐÃ SỬA HIỆU ỨNG LẬT) --- */}
-          {/* 1. Container chính: giữ vị trí và tạo chiều sâu 3D (perspective) */}
-          <div className="group absolute left-1/2 -translate-x-1/2 w-[300px] z-10 [perspective:1000px] pointer-events-auto">
-            {/* 2. Inner Wrapper: Phần thực hiện xoay */}
+          {/* 
+            Flip Card Effect
+            - Structure:
+              1. Outer Container: Sets perspective (1000px) for 3D depth.
+              2. Inner Wrapper: Handles the rotation (rotateY).
+              3. Front/Back Faces: Images positioned absolutely with backface-visibility: hidden.
+            - Interaction: Hovering over the group triggers the flip.
+          */}
+          <div className="group absolute left-1/2 -translate-x-1/2 w-[300px] h-[400px] z-10 [perspective:1000px] pointer-events-auto">
+            {/* Inner Wrapper: Transitions the rotation */}
             <div className="relative w-full h-full transition-all duration-700 [transform-style:preserve-3d] group-hover:[transform:rotateY(180deg)]">
-              {/* MẶT TRƯỚC (Ảnh gốc) */}
-              <img
-                src="/images/Layer_1.png"
-                alt="Dory Front"
-                className="w-full h-auto object-cover [backface-visibility:hidden]"
-              />
+              {/* Front Face */}
+              <div className="absolute inset-0 w-full h-full [backface-visibility:hidden]">
+                <Image
+                  src="/images/Layer_1.png"
+                  alt="Dory Front"
+                  layout="fill"
+                  objectFit="cover"
+                />
+              </div>
 
-              {/* MẶT SAU (Ảnh khi lật) */}
-              {/* Bạn nhớ thay đường dẫn ảnh thứ 2 vào src bên dưới */}
-              <img
-                src="/images/Gemini_Generated_Image_dkmpshdkmpshdkmp 1.png"
-                alt="Dory Back"
-                className="absolute top-0 left-0 w-full h-full object-cover [backface-visibility:hidden] [transform:rotateY(180deg)]"
-              />
+              {/* Back Face (Rotated 180deg initially) */}
+              <div className="absolute inset-0 w-full h-full [backface-visibility:hidden] [transform:rotateY(180deg)]">
+                <Image
+                  src="/images/Gemini_Generated_Image_dkmpshdkmpshdkmp 1.png"
+                  alt="Dory Back"
+                  layout="fill"
+                  objectFit="cover"
+                />
+              </div>
             </div>
           </div>
-          {/* ------------------------------------------- */}
 
-          {/* FLOATING WORDS */}
+          {/* Floating Words */}
           <p className="font-[700] text-[70px] leading-[60px] text-[#7BC14B] absolute top-[25%] left-[29%] z-20">
             the
           </p>

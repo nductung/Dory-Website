@@ -1,5 +1,6 @@
 import { motion, AnimatePresence } from "framer-motion";
 import Router, { useRouter } from "next/router";
+import Link from "next/link";
 
 // --- CONFIG ---
 const COLORS = {
@@ -136,19 +137,20 @@ const Header = ({ isOpen, setIsOpen, indexHeader }) => {
               <div className="flex flex-col gap-2 gap-[38px] mt-[35vh]">
                 {menuItems.map((item, i) => (
                   <div key={i} className="overflow-hidden">
-                    <motion.a
-                      href={item.href}
-                      onClick={(e) => {
-                        if (i === indexHeader) {
-                          e.preventDefault();
-                          setIsOpen(false);
-                        }
-                      }}
-                      variants={itemVars}
-                      className="AristaProAlternateLighttrial font-[700] text-[104px] leading-[89px] text-[#6956B2] mob:text-[52px]"
-                    >
-                      {item.title}
-                    </motion.a>
+                    <Link href={item.href} passHref>
+                      <motion.a
+                        onClick={(e) => {
+                          if (i === indexHeader) {
+                            e.preventDefault();
+                            setIsOpen(false);
+                          }
+                        }}
+                        variants={itemVars}
+                        className="AristaProAlternateLighttrial font-[700] text-[104px] leading-[89px] text-[#6956B2] mob:text-[52px] cursor-pointer block"
+                      >
+                        {item.title}
+                      </motion.a>
+                    </Link>
                   </div>
                 ))}
               </div>
