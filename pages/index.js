@@ -121,7 +121,7 @@ export default function Home() {
       <Header isOpen={isOpen} setIsOpen={setIsOpen} indexHeader={0} />
 
       {/* Introduction */}
-      <div className="px-[98px] py-[100px] flex flex-col mob:px-[25px]">
+      <div className="relative px-[98px] py-[100px] flex flex-col mob:px-[25px]">
         <MaskedReveal delay={0} className="leading-[189px] mob:leading-[90px]">
           <LinearGradient
             className="text-hello AristaProAlternateLighttrial p-[4px] mob:text-[18vw]"
@@ -165,6 +165,21 @@ export default function Home() {
             </LinearGradient>
           </MaskedReveal>
         </div>
+        <motion.img
+          src="/images/u 1.png"
+          alt="Decoration"
+          className="absolute right-0 bottom-[5%] h-[36vw] object-contain pointer-events-none"
+          // 1. Trạng thái ban đầu: Nằm tít dưới góc phải (x: 100%, y: 100%)
+          initial={{ x: "50%", y: "50%", opacity: 0, rotate: 15 }}
+          // 2. Trạng thái kết thúc: Về đúng chỗ
+          animate={{ x: "0%", y: "0%", opacity: 1, rotate: 0 }}
+          // 3. Cấu hình chuyển động: Mượt mà, chậm rãi (1.5s)
+          transition={{
+            duration: 1.5,
+            ease: [0.22, 1, 0.36, 1], // Custom easing (nhanh lúc đầu, chậm dần lúc cuối)
+            delay: 0.8, // Chờ chữ "Hello This is Dory" hiện xong rồi mới bay lên
+          }}
+        />
       </div>
 
       {/* About Section */}
