@@ -10,8 +10,8 @@ const BlogPost = ({ post }) => {
 
   return (
     // Thêm overflow-hidden để tránh scroll ngang khi ảnh bay từ phải vào
-    <div className="bg-primary overflow-hidden"> 
-      <img className="" src={work.banner} alt="img" />
+    <div className="bg-[#ffffff] overflow-hidden"> 
+      <img className="w-full" src={work.banner} alt="img" />
       
       <div className="px-[82px]">
         {work.image.map((item, index) => {
