@@ -103,8 +103,8 @@ const FallingImages = () => {
       // encode path in case contains spaces
       const texture = encodeURI(rawSrc);
 
-      const size = 200
-      console.log(size)
+      const size = 210
+    //   console.log(size)
       const x = Math.random() * Math.max(1, (width - 200)) + 100;
       const y = Math.random() * (height * 0.5) + 50;
       const scaleFactor = size / 200;

@@ -12,7 +12,9 @@ const TRANSITION = { duration: 1.2, ease: [0.76, 0, 0.24, 1] };
 const MaskedReveal = ({ children, delay = 0, className = "" }) => {
   return (
     // pb-4 để đảm bảo khi chữ nghiêng không bị cắt mất phần đáy
-    <div className={`pointer-events-none select-none overflow-hidden py-4 -my-4 px-2 -mx-2 ${className}`}>
+    <div
+      className={`pointer-events-none select-none overflow-hidden py-4 -my-4 px-2 -mx-2 ${className}`}
+    >
       <motion.div
         initial={{ y: "110%", rotate: -5 }} // Bắt đầu: Chìm sâu xuống và Nghiêng đầu phải xuống (-5 độ)
         animate={{ y: "0%", rotate: 0 }} // Kết thúc: Thẳng hàng
@@ -126,7 +128,7 @@ export default function Home() {
         <FallingImages />
         <MaskedReveal delay={0} className="leading-[189px] mob:leading-[90px]">
           <LinearGradient
-            className="text-hello AristaProAlternateLighttrial p-[4px] mob:text-[18vw]"
+            className="text-hello p-[4px] mob:text-[18vw]"
             gradient={["to left", "#F1E306"]}
           >
             {`Hello,`}
@@ -138,7 +140,7 @@ export default function Home() {
             className="leading-[189px] mob:leading-[90px]"
           >
             <LinearGradient
-              className="text-hello AristaProAlternateLighttrial p-[4px] mob:text-[18vw]"
+              className="text-hello p-[4px] mob:text-[18vw]"
               gradient={["to left", "#F1E306"]}
             >
               {"This"}
@@ -149,7 +151,7 @@ export default function Home() {
             className="leading-[189px] mob:leading-[90px]"
           >
             <LinearGradient
-              className="text-hello AristaProAlternateLighttrial p-[4px] mob:text-[18vw]"
+              className="text-hello p-[4px] mob:text-[18vw]"
               gradient={["to left", "#F1E306"]}
             >
               {"is"}
@@ -160,7 +162,7 @@ export default function Home() {
             className="leading-[189px] mob:leading-[90px]"
           >
             <LinearGradient
-              className="text-hello AristaProAlternateLighttrial p-[4px] mob:text-[18vw]"
+              className="text-hello p-[4px] mob:text-[18vw]"
               gradient={["to left", "#7BC14B"]}
             >
               {"Dory"}
@@ -170,7 +172,7 @@ export default function Home() {
       </div>
       {/* About Section */}
       <div className="px-[145px] py-[145px] bg-[#6956B2] flex flex-col gap-[50px] mob:px-[30px] mob:py-[90px]">
-        <p className="AristaProAlternateLighttrial font-[700] text-[88px] leading-[76px] text-center text-[#F1E306] ">
+        <p className="AristaProAlternateBoldtrial font-[700] text-[88px] leading-[76px] text-center text-[#7BC14B] ">
           WHO IS DORY?
         </p>
         {/* Khối text được căn giữa, chiều rộng giới hạn để giống layout tạp chí */}
@@ -181,7 +183,7 @@ export default function Home() {
               delay={index * 0.05} // Stagger nhanh (0.05s) tạo hiệu ứng gợn sóng mượt
               className="text-center"
             >
-              <span className="LexendRegular font-[400] text-[#020202] text-[25px] leading-[1.4] inline-block leading-[76px]">
+              <span className="LexendLight font-[400] text-[#F1E306] text-[25px] leading-[1.4] inline-block leading-[76px]">
                 {line}
               </span>
             </TextLineReveal>
@@ -198,17 +200,19 @@ export default function Home() {
           // Bọc mỗi item trong WorkReveal
           <WorkReveal key={`listWork_${index}`} delay={0.1}>
             <div
-              className="flex flex-col h-[132px]"
+              className="flex flex-col "
               onClick={() => window.open(item.href, "_blank")}
             >
               <div className="relative group flex items-center justify-between cursor-pointer overflow-hidden">
-                <span className="font-[700] text-[48px] leading-[41px] text-[#7BC14B] transition-transform duration-300 group-hover:translate-x-4">
-                  {item.title}
-                </span>
+                <div className="border-b-[3px] border-b-[#F1E306] w-full pb-[36px] mb-[64px]">
+                  <span className="font-[700] text-[48px] leading-[41px] text-[#7BC14B] transition-transform duration-300 group-hover:translate-x-4">
+                    {item.title}
+                  </span>
+                </div>
                 <img
                   src={item.logo}
                   alt={item.title}
-                  className="h-[132px] w-[132px] opacity-0 scale-50 group-hover:opacity-100 group-hover:scale-100 transition-all duration-300"
+                  className={`h-[132px] w-[132px] opacity-0 scale-50 group-hover:opacity-100 group-hover:scale-100 transition-all duration-300`}
                 />
               </div>
             </div>

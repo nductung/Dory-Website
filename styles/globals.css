@@ -86,7 +86,7 @@ body {
   line-height: 41px;
 }
 .text-hello {
-  font-style: 'AristaProAlternateLighttrial';
+  font-family: "AristaProAlternateBoldtrial";
   font-weight: 1000;
   font-size: 200px;
   line-height: 172px;
@@ -96,7 +96,17 @@ body {
   background-color: #020202;
 }
 
+/* #__next {
+  background-color: #020202;
+} */
+
 /*  */
+.AristaProAlternateFattrial {
+    font-family: "AristaProAlternateFattrial";
+}
+.AristaProAlternateBoldtrial {
+    font-family: "AristaProAlternateBoldtrial";
+}
 .AristaProAlternateLighttrial {
   font-family: "AristaProAlternateLighttrial";
 }
@@ -141,6 +151,16 @@ body {
   font-weight: 300;
 }
 
+@font-face {
+  font-family: "AristaProAlternateBoldtrial";
+  src: url("/fonts/Arista-Pro-Alternate-Bold-trial.ttf") format("truetype");
+  font-weight: 700;
+}
+@font-face {
+  font-family: "AristaProAlternateFattrial";
+  src: url("/fonts/Arista-Pro-Alternate-Fat-trial.ttf") format("truetype");
+  font-weight: 700;
+}
 @font-face {
   font-family: "AristaProBoldtrial";
   src: url("/fonts/Arista-Pro-Bold-trial.ttf") format("truetype");
