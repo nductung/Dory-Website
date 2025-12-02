@@ -3,6 +3,7 @@ import { useState, useEffect } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import Contact from "../components/Contact";
 import Header from "../components/Header";
+import FallingImages from "../components/FallingImages";
 
 // Easing cực mượt (Fluid Motion)
 const TRANSITION = { duration: 1.2, ease: [0.76, 0, 0.24, 1] };
@@ -11,7 +12,7 @@ const TRANSITION = { duration: 1.2, ease: [0.76, 0, 0.24, 1] };
 const MaskedReveal = ({ children, delay = 0, className = "" }) => {
   return (
     // pb-4 để đảm bảo khi chữ nghiêng không bị cắt mất phần đáy
-    <div className={`overflow-hidden py-4 -my-4 px-2 -mx-2 ${className}`}>
+    <div className={`pointer-events-none select-none overflow-hidden py-4 -my-4 px-2 -mx-2 ${className}`}>
       <motion.div
         initial={{ y: "110%", rotate: -5 }} // Bắt đầu: Chìm sâu xuống và Nghiêng đầu phải xuống (-5 độ)
         animate={{ y: "0%", rotate: 0 }} // Kết thúc: Thẳng hàng
@@ -121,7 +122,8 @@ export default function Home() {
       <Header isOpen={isOpen} setIsOpen={setIsOpen} indexHeader={0} />
 
       {/* Introduction */}
-      <div className="relative px-[98px] py-[100px] flex flex-col items-center mob:px-[25px]">
+      <div className="relative px-[98px] flex flex-col items-center mob:px-[25px] h-[calc(100vh-130px)] overflow-hidden">
+        <FallingImages />
         <MaskedReveal delay={0} className="leading-[189px] mob:leading-[90px]">
           <LinearGradient
             className="text-hello AristaProAlternateLighttrial p-[4px] mob:text-[18vw]"

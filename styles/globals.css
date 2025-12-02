@@ -86,8 +86,8 @@ body {
   line-height: 41px;
 }
 .text-hello {
-  font-style: normal;
-  font-weight: 700;
+  font-style: 'AristaProAlternateLighttrial';
+  font-weight: 1000;
   font-size: 200px;
   line-height: 172px;
 }
