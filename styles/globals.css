@@ -88,8 +88,8 @@ body {
 .text-hello {
   font-style: normal;
   font-weight: 700;
-  font-size: 190px;
-  /* line-height: 189px; */
+  font-size: 200px;
+  line-height: 172px;
 }
 
 .bg-primary {
