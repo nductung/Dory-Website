@@ -1,0 +1,6 @@
+[build]
+  command   = "npm run build"   # hoặc yarn build, tùy dự án
+  publish   = "build"           # folder xuất bản, ví dụ: build, dist, public
+
+[build.environment]
+  NODE_VERSION = "20"           # Chọn Node 20 cho môi trường Netlify
