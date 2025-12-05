@@ -1,6 +1,6 @@
 import { LinearGradient } from "react-text-gradients";
 import { useState, useEffect } from "react";
-import { motion, AnimatePresence } from "framer-motion";
+import { motion, AnimatePresence, useScroll, useMotionValueEvent } from "framer-motion"; // Import thêm hook scroll
 import Contact from "../components/Contact";
 import Header from "../components/Header";
 import FallingImages from "../components/FallingImages";
@@ -74,6 +74,20 @@ const WorkReveal = ({ children, delay = 0, className = "" }) => {
 export default function Home() {
   const [isOpen, setIsOpen] = useState(false);
 
+  // --- 1. LOGIC SMART HEADER ---
+  const [isHidden, setIsHidden] = useState(false);
+  const { scrollY } = useScroll();
+
+  useMotionValueEvent(scrollY, "change", (latest) => {
+    const previous = scrollY.getPrevious();
+    // Nếu cuộn xuống quá 100px và vị trí mới lớn hơn cũ -> Ẩn
+    if (latest > previous && latest > 100) {
+      setIsHidden(true);
+    } else {
+      setIsHidden(false); // Cuộn lên -> Hiện
+    }
+  });
+
   // --- LOGIC: KHÓA SCROLL KHI MỞ MENU ---
   useEffect(() => {
     if (isOpen) {
@@ -120,11 +134,23 @@ export default function Home() {
   ];
 
   return (
-    <div className="w-full bg-primary">
-      <Header isOpen={isOpen} setIsOpen={setIsOpen} indexHeader={0} />
+    <div className="w-full bg-primary relative">
+      
+      {/* --- 2. HEADER ANIMATION (Fixed Top) --- */}
+      <motion.div
+        variants={{
+          visible: { y: 0 },
+          hidden: { y: "-100%" },
+        }}
+        animate={isHidden ? "hidden" : "visible"}
+        transition={{ duration: 0.35, ease: "easeInOut" }}
+        className="fixed top-0 left-0 w-full z-50" // z-50 để đè lên FallingImages và nội dung khác
+      >
+        <Header isOpen={isOpen} setIsOpen={setIsOpen} indexHeader={0} />
+      </motion.div>
 
       {/* Introduction */}
-      <div className="relative px-[98px] flex flex-col items-center mob:px-[25px] h-[calc(100vh-130px)] overflow-hidden">
+      <div className="relative px-[98px] flex flex-col items-center mob:px-[25px] h-[calc(100vh)] pt-[130px] overflow-hidden">
         <FallingImages />
         <MaskedReveal delay={0} className="leading-[189px] mob:leading-[90px]">
           <LinearGradient

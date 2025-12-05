@@ -76,7 +76,7 @@ const BlogPost = ({ post }) => {
                 ease: "easeOut",
               }}
               viewport={{
-                once: false,
+                once: true,
                 amount: 0.2,
               }}
             />
