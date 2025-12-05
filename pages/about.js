@@ -54,8 +54,6 @@ const About = () => {
 
   return (
     <div className="bg-primary relative">
-      
-      {/* --- HEADER --- */}
       <motion.div 
         variants={{
           visible: { y: 0 },
