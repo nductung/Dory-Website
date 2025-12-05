@@ -102,10 +102,10 @@ body {
 
 /*  */
 .AristaProAlternateFattrial {
-    font-family: "AristaProAlternateFattrial";
+  font-family: "AristaProAlternateFattrial";
 }
 .AristaProAlternateBoldtrial {
-    font-family: "AristaProAlternateBoldtrial";
+  font-family: "AristaProAlternateBoldtrial";
 }
 .AristaProAlternateLighttrial {
   font-family: "AristaProAlternateLighttrial";
@@ -269,4 +269,19 @@ body {
   100% {
     transform: translateX(-100%);
   }
+}
+
+.btn-contact {
+  background: #6956b2;
+  border-radius: 11px;
+  font-family: "LexendRegular";
+  font-style: normal;
+  font-weight: 400;
+  font-size: 21px;
+  line-height: 26px;
+  text-align: center;
+
+  color: #f1e306;
+  width: 193px;
+  height: 58px;
 }

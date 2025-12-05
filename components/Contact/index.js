@@ -14,15 +14,15 @@ const Contact = ({ content }) => {
           - Laptop: absolute, top/right cố định, căn phải
           - Mobile: static (hết absolute), margin top, căn trái
       */}
-      <div className="absolute top-[145px] right-[122px] flex flex-col gap-[16px] text-right mob:static mob:mt-[40px] mob:gap-[12px] mob:text-left">
-        <a
+      <div className="absolute top-[145px] right-[122px] flex flex-col gap-[16px] text-right mob:static mob:mt-[40px] mob:gap-[12px] mob:text-left items-end">
+        {/* <a
           href="https://www.google.com/maps/search/?api=1&query=A.+La+Khe,+Ha+Dong,+Ha+Noi"
           target="_blank"
           rel="noopener noreferrer"
           className="LexendRegular font-[400] text-[21px] leading-[26px] text-[#7BC14B] hover:underline mob:text-[16px] mob:leading-[22px]"
         >
           A. La Khe, Ha Dong, Ha Noi
-        </a>
+        </a> */}
         <a
           href="mailto:dobaonhi7@gmail.com"
           className="LexendRegular font-[400] text-[21px] leading-[26px] text-[#F1E306] hover:underline mob:text-[16px] mob:leading-[22px]"
@@ -35,6 +35,28 @@ const Contact = ({ content }) => {
         >
           P. (+84) 981 345 258
         </a>
+        <button
+          className="btn-contact"
+          onClick={() =>
+            window.open("https://www.behance.net/dobaonhi749d8", "_blank")
+          }
+        >
+          <p>Behance</p>
+        </button>
+        <button
+          className="btn-contact"
+          onClick={() => window.open("https://www.linkedin.com", "_blank")}
+        >
+          <p>Linkedln</p>
+        </button>
+        <button
+          className="btn-contact"
+          onClick={() =>
+            window.open("https://www.instagram.com/doryinhere/", "_blank")
+          }
+        >
+          <p>Instargram</p>
+        </button>
       </div>
 
       {/* Background Image Element 

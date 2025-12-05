@@ -171,7 +171,7 @@ export default function Home() {
         </div>
       </div>
       {/* About Section */}
-      <div className="px-[145px] py-[145px] bg-[#6956B2] flex flex-col gap-[50px] mob:px-[30px] mob:py-[90px]">
+      <div className="h-screen px-[145px] py-[145px] bg-[#6956B2] flex flex-col gap-[50px] mob:px-[30px] mob:py-[90px]">
         <p className="AristaProAlternateBoldtrial font-[700] text-[88px] leading-[76px] text-center text-[#7BC14B] ">
           WHO IS DORY?
         </p>
@@ -204,7 +204,7 @@ export default function Home() {
               onClick={() => window.open(item.href, "_blank")}
             >
               <div className="relative group flex items-center justify-between cursor-pointer overflow-hidden">
-                <div className="border-b-[3px] border-b-[#F1E306] w-full pb-[36px] mb-[64px]">
+                <div className="border-b-[3px] border-b-[#F1E306] w-full pb-[36px] mb-[64px] mr-[79px]">
                   <span className="font-[700] text-[48px] leading-[41px] text-[#7BC14B] transition-transform duration-300 group-hover:translate-x-4">
                     {item.title}
                   </span>
