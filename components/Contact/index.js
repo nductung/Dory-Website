@@ -2,7 +2,7 @@ import React from "react";
 
 const Contact = ({ content }) => {
   return (
-    <div className="relative px-[122px] pt-[135px] pb-[300px] mob:px-[20px] mob:pt-[60px] mob:pb-[150px]">
+    <div className="h-screen relative pt-[3vw] pl-[3vw] mob:px-[20px] mob:pt-[60px] mob:pb-[150px]">
       {/* Big Title */}
       <p className="font-[700] text-[188px] leading-[200px] text-[#F1E306] mob:text-[60px] mob:leading-[0.9]">
         TELL ME
@@ -14,7 +14,7 @@ const Contact = ({ content }) => {
           - Laptop: absolute, top/right cố định, căn phải
           - Mobile: static (hết absolute), margin top, căn trái
       */}
-      <div className="absolute top-[145px] right-[122px] flex flex-col gap-[16px] text-right mob:static mob:mt-[40px] mob:gap-[12px] mob:text-left items-end">
+      <div className="absolute top-[3vw] right-[10vw] flex flex-col gap-[16px] text-right mob:static mob:mt-[40px] mob:gap-[12px] mob:text-left items-end">
         {/* <a
           href="https://www.google.com/maps/search/?api=1&query=A.+La+Khe,+Ha+Dong,+Ha+Noi"
           target="_blank"
