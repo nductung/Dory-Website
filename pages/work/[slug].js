@@ -4,6 +4,7 @@ import data from "../../data/portfolio.json";
 import Contact from "../../components/Contact";
 import Header from "../../components/Header"; // Import Header
 import { motion, useScroll, useMotionValueEvent } from "framer-motion";
+import Router, { useRouter } from "next/router";
 
 const BlogPost = ({ post }) => {
   const work = data.work[post.slug];
@@ -16,11 +17,11 @@ const BlogPost = ({ post }) => {
   // --- 2. Logic bắt sự kiện cuộn ---
   useMotionValueEvent(scrollY, "change", (latest) => {
     const previous = scrollY.getPrevious();
-    
+
     // Nếu cuộn xuống quá 100px và vị trí mới lớn hơn vị trí cũ -> Ẩn Header
     if (latest > previous && latest > 100) {
       setIsHidden(true);
-    } 
+    }
     // Nếu cuộn lên -> Hiện Header
     else {
       setIsHidden(false);
@@ -29,9 +30,14 @@ const BlogPost = ({ post }) => {
 
   if (!work) return <div className="bg-primary" />;
 
+  // console.log(Object.keys(data.work), Object.keys(data.work).length);
+  // console.log(work.order, work.href);
+  const isPrev = work.order > 0;
+  // const linkPrev =
+  const isNext = work.order < 4;
+
   return (
     <div className="bg-[#ffffff] overflow-hidden relative">
-      
       {/* --- 3. HEADER ANIMATION --- */}
       <motion.div
         variants={{
@@ -55,7 +61,7 @@ const BlogPost = ({ post }) => {
 
       {/* Content Images */}
       <div
-        className="px-[82px]"
+        className="px-[82px] relative"
         style={{
           backgroundImage: "url('/images/folioart 1.png')",
           backgroundSize: "auto",
@@ -65,10 +71,9 @@ const BlogPost = ({ post }) => {
           return (
             <motion.img
               key={"image_" + index}
-              className="my-[64px]"
+              className="pt-[64px] pb-[128px]"
               src={item}
               alt="img"
-              
               initial={{ opacity: 0, x: 100 }}
               whileInView={{ opacity: 1, x: 0 }}
               transition={{
@@ -82,6 +87,34 @@ const BlogPost = ({ post }) => {
             />
           );
         })}
+        {isPrev && (
+          <div
+            className="absolute bottom-0 left-[60px] cursor-pointer"
+            onClick={() =>
+              Router.push(
+                `/${
+                  data.work[Object.keys(data.work)[work.order - 1]].href
+                }`
+              )
+            }
+          >
+            <img className="" src={"/images/Group 10.png"} alt="img" />
+          </div>
+        )}
+        {isNext && (
+          <div
+            className="absolute bottom-0 right-[60px] cursor-pointer"
+            onClick={() => {
+              Router.push(
+                `/${
+                  data.work[Object.keys(data.work)[work.order + 1]].href
+                }`
+              );
+            }}
+          >
+            <img className="" src={"/images/Group 10 2.png"} alt="img" />
+          </div>
+        )}
       </div>
 
       {/* Footer / Contact */}

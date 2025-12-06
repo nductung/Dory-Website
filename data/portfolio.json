@@ -129,15 +129,9 @@
         "/images/work/mo/Mo ani1.png",
         "/images/work/mo/Mo ani2.png",
         "/images/work/mo/Mo ani3.png"
-      ]
-    },
-    "meoi": {
-      "banner": "/images/work/meoi/meoi1 1.png",
-      "image": [
-        "/images/work/meoi/animation 1.png",
-        "/images/work/meoi/Frame 10.png",
-        "/images/work/meoi/Frame 11.png"
-      ]
+      ],
+      "href": "/work/mo",
+      "order": 0
     },
     "folio": {
       "banner": "/images/work/folio/folio1 1.png",
@@ -146,7 +140,9 @@
         "/images/work/folio/Folio ani2.png",
         "/images/work/folio/Folio ani 3.png",
         "/images/work/folio/Folio ani4.png"
-      ]
+      ],
+      "href": "/work/folio",
+      "order": 1
     },
     "heineken": {
       "banner": "/images/work/heniken/hen1 1.png",
@@ -154,15 +150,30 @@
         "/images/work/heniken/hen ani 1.png",
         "/images/work/heniken/hen ani2.png",
         "/images/work/heniken/hen ani 3.png"
-      ]
+      ],
+      "href": "/work/heineken",
+      "order": 2
     },
+    "meoi": {
+      "banner": "/images/work/meoi/meoi1 1.png",
+      "image": [
+        "/images/work/meoi/animation 1.png",
+        "/images/work/meoi/Frame 10.png",
+        "/images/work/meoi/Frame 11.png"
+      ],
+      "href": "/work/meoi",
+      "order": 3
+    },
+
     "bibong": {
       "banner": "/images/work/bibong/bibong 1.png",
       "image": [
         "/images/work/bibong/Ani Bi Bong.png",
         "/images/work/bibong/bibong ani 2.png",
         "/images/work/bibong/bibong ani 3.png"
-      ]
+      ],
+      "href": "/work/bibong",
+      "order": 4
     }
   }
 }
